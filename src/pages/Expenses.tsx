@@ -123,6 +123,7 @@ const Expenses: React.FC = () => {
           >
             <MenuItem value="1">Debit</MenuItem>
             <MenuItem value="2">Credit</MenuItem>
+            <MenuItem value="2">Cash</MenuItem>
           </TextField>
           <Button variant="contained" type="submit">
             Add
