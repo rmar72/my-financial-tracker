@@ -16,11 +16,12 @@ import {
   MenuItem
 } from '@mui/material';
 
-import { useGetExpensesQuery, useAddExpenseMutation } from '../features/api/expensesApi';
+import { useGetExpensesQuery, useAddExpenseMutation, useGetCategoriesQuery } from '../features/api/expensesApi';
 import { Expense } from '../types/Expense';
 
 const Expenses: React.FC = () => {
   const { data: expenses, isLoading, isError } = useGetExpensesQuery();
+  const { data: categories = [] } = useGetCategoriesQuery();
   const [addExpense] = useAddExpenseMutation();
 
   const [formData, setFormData] = useState({
@@ -58,6 +59,12 @@ const Expenses: React.FC = () => {
     }
   };
 
+  const categoryMap = categories.reduce((acc, cur) => {
+    acc[cur.id] = cur.name;
+    return acc;
+  }, {} as Record<number, string>);
+  
+
   return (
     <Box>
       <Typography variant="h5" gutterBottom>
@@ -92,17 +99,20 @@ const Expenses: React.FC = () => {
             onChange={handleChange}
           />
           <TextField
-            label="Category ID"
+            label="Category"
             name="categoryId"
             select
             size="small"
             value={formData.categoryId}
             onChange={handleChange}
           >
-            <MenuItem value="1">Groceries</MenuItem>
-            <MenuItem value="2">Bills</MenuItem>
-            {/* Replace with dynamic categories later */}
+            {categories.map((cat) => (
+              <MenuItem key={cat.id} value={cat.id.toString()}>
+                {cat.name}
+              </MenuItem>
+            ))}
           </TextField>
+
           <TextField
             label="Payment ID"
             name="paymentId"
@@ -147,7 +157,7 @@ const Expenses: React.FC = () => {
                   <TableCell>{new Date(expense.date).toLocaleDateString()}</TableCell>
                   <TableCell>${Number(expense.amount).toFixed(2)}</TableCell>
                   <TableCell>{expense.description || '-'}</TableCell>
-                  <TableCell>{expense.categoryId}</TableCell>
+                  <TableCell>{categoryMap[expense.categoryId] || expense.categoryId}</TableCell>
                   <TableCell>{expense.paymentId}</TableCell>
                 </TableRow>
               ))}
