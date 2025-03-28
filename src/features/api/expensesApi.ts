@@ -15,11 +15,23 @@ export const expensesApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Expense']
     }),
+    deleteExpense: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `expenses/${id}`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: ['Expense']
+    }),
     getCategories: builder.query<{ id: number; name: string }[], void>({
       query: () => 'categories',
       providesTags: ['Category']
-    })
+    }),
   })
 });
 
-export const { useGetExpensesQuery, useAddExpenseMutation, useGetCategoriesQuery } = expensesApi;
+export const { 
+  useGetExpensesQuery,
+  useAddExpenseMutation,
+  useDeleteExpenseMutation,
+  useGetCategoriesQuery
+} = expensesApi;
