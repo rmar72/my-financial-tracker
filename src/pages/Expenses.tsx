@@ -3,15 +3,13 @@ import {
   Box,
   CircularProgress,
   Typography,
-  TextField,
-  Button,
-  Stack,
-  MenuItem
 } from '@mui/material';
 import { useGetExpensesQuery, useAddExpenseMutation, useGetCategoriesQuery } from '../features/api/expensesApi';
 import { Expense } from '../types/Expense';
 import { format } from 'date-fns';
-import MonthlyExpenseGroup from './MonthlyExpenseGroup';
+import MonthlyExpenseGroup from '../components/MonthlyExpenseGroup';
+import AddExpenseForm from '../components/AddExpenseForm';
+
 
 const Expenses: React.FC = () => {
   const { data: expenses = [], isLoading, isError } = useGetExpensesQuery();
@@ -76,64 +74,12 @@ const Expenses: React.FC = () => {
         Expenses
       </Typography>
 
-      {/* Add Expense Form */}
-      <form onSubmit={handleSubmit}>
-        <Stack direction="row" spacing={2} alignItems="center" mb={3}>
-          <TextField
-            label="Amount"
-            name="amount"
-            type="number"
-            size="small"
-            value={formData.amount}
-            onChange={handleChange}
-          />
-          <TextField
-            label="Date"
-            name="date"
-            type="date"
-            size="small"
-            InputLabelProps={{ shrink: true }}
-            value={formData.date}
-            onChange={handleChange}
-          />
-          <TextField
-            label="Description"
-            name="description"
-            size="small"
-            value={formData.description}
-            onChange={handleChange}
-          />
-          <TextField
-            label="Category"
-            name="categoryId"
-            select
-            size="small"
-            value={formData.categoryId}
-            onChange={handleChange}
-          >
-            {categories.map((cat) => (
-              <MenuItem key={cat.id} value={cat.id.toString()}>
-                {cat.name}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            label="Payment"
-            name="paymentId"
-            select
-            size="small"
-            value={formData.paymentId}
-            onChange={handleChange}
-          >
-            <MenuItem value="1">Debit</MenuItem>
-            <MenuItem value="2">Credit</MenuItem>
-            <MenuItem value="3">Cash</MenuItem>
-          </TextField>
-          <Button variant="contained" type="submit">
-            Add
-          </Button>
-        </Stack>
-      </form>
+      <AddExpenseForm
+        formData={formData}
+        onChange={handleChange}
+        onSubmit={handleSubmit}
+        categories={categories}
+      />
 
       {/* Expense Table */}
       {isLoading ? (
