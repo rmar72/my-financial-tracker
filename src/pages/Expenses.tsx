@@ -3,24 +3,18 @@ import {
   Box,
   CircularProgress,
   Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
   TextField,
   Button,
   Stack,
   MenuItem
 } from '@mui/material';
-
 import { useGetExpensesQuery, useAddExpenseMutation, useGetCategoriesQuery } from '../features/api/expensesApi';
 import { Expense } from '../types/Expense';
+import { format } from 'date-fns';
+import MonthlyExpenseGroup from './MonthlyExpenseGroup';
 
 const Expenses: React.FC = () => {
-  const { data: expenses, isLoading, isError } = useGetExpensesQuery();
+  const { data: expenses = [], isLoading, isError } = useGetExpensesQuery();
   const { data: categories = [] } = useGetCategoriesQuery();
   const [addExpense] = useAddExpenseMutation();
 
@@ -63,7 +57,18 @@ const Expenses: React.FC = () => {
     acc[cur.id] = cur.name;
     return acc;
   }, {} as Record<number, string>);
-  
+
+  const groupExpensesByMonth = (expenses: Expense[]) => {
+    const grouped: Record<string, Expense[]> = {};
+    expenses.forEach((expense) => {
+      const monthKey = format(new Date(expense.date), 'MMMM yyyy');
+      if (!grouped[monthKey]) grouped[monthKey] = [];
+      grouped[monthKey].push(expense);
+    });
+    return grouped;
+  };
+
+  const expensesByMonth = groupExpensesByMonth(expenses);
 
   return (
     <Box>
@@ -112,9 +117,8 @@ const Expenses: React.FC = () => {
               </MenuItem>
             ))}
           </TextField>
-
           <TextField
-            label="Payment ID"
+            label="Payment"
             name="paymentId"
             select
             size="small"
@@ -123,7 +127,7 @@ const Expenses: React.FC = () => {
           >
             <MenuItem value="1">Debit</MenuItem>
             <MenuItem value="2">Credit</MenuItem>
-            <MenuItem value="2">Cash</MenuItem>
+            <MenuItem value="3">Cash</MenuItem>
           </TextField>
           <Button variant="contained" type="submit">
             Add
@@ -136,35 +140,19 @@ const Expenses: React.FC = () => {
         <Box display="flex" justifyContent="center" mt={4}>
           <CircularProgress />
         </Box>
-      ) : isError || !expenses ? (
+      ) : isError ? (
         <Box display="flex" justifyContent="center" mt={4}>
           <Typography color="error">Failed to load expenses.</Typography>
         </Box>
       ) : (
-        <TableContainer component={Paper}>
-          <Table size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell>Date</TableCell>
-                <TableCell>Amount</TableCell>
-                <TableCell>Description</TableCell>
-                <TableCell>Category ID</TableCell>
-                <TableCell>Payment ID</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {expenses.map((expense: Expense) => (
-                <TableRow key={expense.id}>
-                  <TableCell>{new Date(expense.date).toLocaleDateString()}</TableCell>
-                  <TableCell>${Number(expense.amount).toFixed(2)}</TableCell>
-                  <TableCell>{expense.description || '-'}</TableCell>
-                  <TableCell>{categoryMap[expense.categoryId] || expense.categoryId}</TableCell>
-                  <TableCell>{expense.paymentId}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        Object.entries(expensesByMonth).map(([month, monthExpenses]) => (
+          <MonthlyExpenseGroup
+            key={month}
+            month={month}
+            expenses={monthExpenses}
+            categoryMap={categoryMap}
+          />
+        ))
       )}
     </Box>
   );
