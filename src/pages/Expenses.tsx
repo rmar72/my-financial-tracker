@@ -97,6 +97,7 @@ const Expenses: React.FC = () => {
             month={month}
             expenses={monthExpenses}
             categoryMap={categoryMap}
+            categories={categories}
           />
         ))
       )}

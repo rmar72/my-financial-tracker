@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Typography,
@@ -14,15 +14,33 @@ import { Expense } from '../types/Expense';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useDeleteExpenseMutation } from '../features/api/expensesApi';
-
+import EditIcon from '@mui/icons-material/Edit';
+import EditExpenseModal from './EditExpenseModal';
+import { useUpdateExpenseMutation } from '../features/api/expensesApi';
 interface Props {
   categoryId: number;
   categoryName: string;
   expenses: Expense[];
+  categories: { id: number; name: string }[];
 }
 
-const CategoryExpenseTable: React.FC<Props> = ({ categoryId, categoryName, expenses }) => {
+const CategoryExpenseTable: React.FC<Props> = ({ categoryId, categoryName, expenses, categories }) => {
   const [deleteExpense] = useDeleteExpenseMutation();
+  const [updateExpense] = useUpdateExpenseMutation();
+  const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleEdit = (expense: Expense) => {
+    setEditingExpense(expense);
+    setIsModalOpen(true);
+  };
+
+  const handleUpdate = (data: Partial<Expense>) => {
+    if (editingExpense) {
+      updateExpense({ id: editingExpense.id, data });
+    }
+  };
+
 
   return (
     <Box key={categoryId} mb={2}>
@@ -47,11 +65,10 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, categoryName, expen
                 <TableCell>{expense.description || '-'}</TableCell>
                 <TableCell>{expense.paymentId}</TableCell>
                 <TableCell>
-                  <IconButton
-                    color="error"
-                    size="small"
-                    onClick={() => deleteExpense(expense.id)}
-                  >
+                  <IconButton size="small" onClick={() => handleEdit(expense)}>
+                    <EditIcon fontSize="small" />
+                  </IconButton>
+                  <IconButton color="error" size="small" onClick={() => deleteExpense(expense.id)}>
                     <DeleteIcon fontSize="small" />
                   </IconButton>
                 </TableCell>
@@ -60,6 +77,13 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, categoryName, expen
           </TableBody>
         </Table>
       </TableContainer>
+      <EditExpenseModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleUpdate}
+        initialData={editingExpense}
+        categories={categories}
+      />
     </Box>
   );
 };

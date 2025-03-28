@@ -7,9 +7,10 @@ interface Props {
   month: string;
   expenses: Expense[];
   categoryMap: Record<number, string>;
+  categories: { id: number; name: string }[];
 }
 
-const MonthlyExpenseGroup: React.FC<Props> = ({ month, expenses, categoryMap }) => {
+const MonthlyExpenseGroup: React.FC<Props> = ({ month, expenses, categoryMap, categories }) => {
   const expensesByCategory = expenses.reduce((acc, expense) => {
     if (!acc[expense.categoryId]) acc[expense.categoryId] = [];
     acc[expense.categoryId].push(expense);
@@ -28,6 +29,7 @@ const MonthlyExpenseGroup: React.FC<Props> = ({ month, expenses, categoryMap }) 
           categoryId={+categoryId}
           categoryName={categoryMap[+categoryId] || `Category ${categoryId}`}
           expenses={categoryExpenses}
+          categories={categories}
         />
       ))}
     </Box>

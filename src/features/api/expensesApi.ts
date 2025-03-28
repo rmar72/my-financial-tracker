@@ -22,6 +22,14 @@ export const expensesApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Expense']
     }),
+    updateExpense: builder.mutation<Expense, { id: number; data: Partial<Expense> }>({
+      query: ({ id, data }) => ({
+        url: `expenses/${id}`,
+        method: 'PUT',
+        body: data
+      }),
+      invalidatesTags: ['Expense']
+    }),    
     getCategories: builder.query<{ id: number; name: string }[], void>({
       query: () => 'categories',
       providesTags: ['Category']
@@ -33,5 +41,6 @@ export const {
   useGetExpensesQuery,
   useAddExpenseMutation,
   useDeleteExpenseMutation,
+  useUpdateExpenseMutation,
   useGetCategoriesQuery
 } = expensesApi;
