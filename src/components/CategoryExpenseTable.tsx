@@ -11,6 +11,9 @@ import {
   Paper
 } from '@mui/material';
 import { Expense } from '../types/Expense';
+import { IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useDeleteExpenseMutation } from '../features/api/expensesApi';
 
 interface Props {
   categoryId: number;
@@ -19,6 +22,8 @@ interface Props {
 }
 
 const CategoryExpenseTable: React.FC<Props> = ({ categoryId, categoryName, expenses }) => {
+  const [deleteExpense] = useDeleteExpenseMutation();
+
   return (
     <Box key={categoryId} mb={2}>
       <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
@@ -41,6 +46,15 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, categoryName, expen
                 <TableCell>${Number(expense.amount).toFixed(2)}</TableCell>
                 <TableCell>{expense.description || '-'}</TableCell>
                 <TableCell>{expense.paymentId}</TableCell>
+                <TableCell>
+                  <IconButton
+                    color="error"
+                    size="small"
+                    onClick={() => deleteExpense(expense.id)}
+                  >
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
