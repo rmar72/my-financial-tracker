@@ -33,8 +33,10 @@ const MonthTabs: React.FC<Props> = ({ expenses, children }) => {
         sx={{
           mb: 3,
           px: 1,
+          py: 0.5,
           backgroundColor: '#eee',
           borderRadius: '10px',
+          width: '93%',
           minHeight: 44,
           '& .MuiTabs-flexContainer': {
             padding: '0 3px',
@@ -61,8 +63,9 @@ const MonthTabs: React.FC<Props> = ({ expenses, children }) => {
             sx={{
               fontWeight: 500,
               minHeight: 44,
-              minWidth: 72,
+              minWidth: '72px',
               px: 2,
+              my: 0,
               borderRadius: '8px',
               opacity: 0.7,
               color: 'text.primary',
