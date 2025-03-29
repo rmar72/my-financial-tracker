@@ -1,62 +1,12 @@
-// import React from 'react';
-// import {
-//   Card,
-//   CardContent,
-//   Typography,
-//   List,
-//   ListItem,
-//   ListItemText,
-//   Divider
-// } from '@mui/material';
-// import { Expense } from '../types/Expense';
-
-// interface Props {
-//   categoryId: number;
-//   expenses: Expense[];
-// }
-
-// const CategoryCard: React.FC<Props> = ({ categoryId, expenses }) => {
-//   const total = expenses.reduce((sum, exp) => sum + Number(exp.amount), 0);
-
-//   return (
-//     <Card variant="outlined">
-//       <CardContent>
-//         <Typography variant="h6" gutterBottom>
-//           Category ID: {categoryId}
-//         </Typography>
-
-//         <Typography variant="subtitle2" gutterBottom>
-//           Total: ${total.toFixed(2)}
-//         </Typography>
-
-//         <List dense disablePadding>
-//           {expenses.map((expense) => (
-//             <React.Fragment key={expense.id}>
-//               <ListItem>
-//                 <ListItemText
-//                   primary={`$${Number(expense.amount).toFixed(2)} – ${expense.description || 'No description'}`}
-//                   secondary={new Date(expense.date).toLocaleDateString()}
-//                 />
-//               </ListItem>
-//               <Divider />
-//             </React.Fragment>
-//           ))}
-//         </List>
-//       </CardContent>
-//     </Card>
-//   );
-// };
-
-// export default CategoryCard;
-
-
 import React, { useState } from 'react';
 import {
   Card,
-  CardActionArea,
-  CardContent,
-  Typography
+  Box,
+  Typography,
+  Slider,
+  CardActionArea
 } from '@mui/material';
+import { sliderClasses } from '@mui/material/Slider';
 import { Expense } from '../types/Expense';
 import CategoryExpensesModal from './CategoryExpensesModal';
 
@@ -70,22 +20,90 @@ const CategoryCard: React.FC<Props> = ({ categoryId, expenses, categories }) => 
   const [open, setOpen] = useState(false);
 
   const total = expenses.reduce((sum, exp) => sum + Number(exp.amount), 0);
+  const budget = 500; // 🔧 Mock budget for now
+  const percentUsed = Math.min((total / budget) * 100, 100);
+  const usageDisplay = `${Math.round(total)} / ${budget}`;
 
   const category = categories.find((c) => c.id === categoryId);
   const categoryName = category ? category.name : `Category ${categoryId}`;
 
   return (
     <>
-      <Card variant="outlined">
-        <CardActionArea onClick={() => setOpen(true)}>
-          <CardContent>
-            <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+      <Card
+        elevation={0}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          padding: 2,
+          minWidth: 280,
+          borderRadius: '12px',
+          boxShadow: '0 2px 4px 0 rgba(138, 148, 159, 0.2)',
+          '& > *:nth-of-type(1)': {
+            marginRight: 2
+          },
+          '& > *:nth-of-type(2)': {
+            flex: 1
+          }
+        }}
+      >
+          <CardActionArea
+            onClick={() => setOpen(true)}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              width: '100%',
+              padding: '20px',
+              '& .MuiCardActionArea-focusHighlight': {
+                opacity: 0,
+                background: 'transparent'
+              }
+            }}
+          >
+          <Box>
+            <Typography sx={{ fontSize: 16, fontWeight: 600 }}>
               {categoryName}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Total: ${total.toFixed(2)}
+            <Typography
+              sx={{
+                fontSize: 14,
+                color: 'grey.600',
+                letterSpacing: '0.5px',
+                mb: 0.5
+              }}
+            >
+              Total Spent: ${total.toFixed(2)}
             </Typography>
-          </CardContent>
+
+            <Box display="flex" alignItems="center">
+              <Slider
+                value={percentUsed}
+                sx={{
+                  height: 4,
+                  flex: 1,
+                  [`& .${sliderClasses.rail}`]: {
+                    borderRadius: '10px',
+                    height: 4,
+                    backgroundColor: 'rgb(202,211,216)'
+                  },
+                  [`& .${sliderClasses.track}`]: {
+                    borderRadius: '10px',
+                    height: 4,
+                    backgroundColor: percentUsed > 90 ? 'error.main' : 'primary.main',
+                    border: 'none'
+                  },
+                  [`& .${sliderClasses.thumb}`]: {
+                    display: 'none'
+                  }
+                }}
+              />
+              <Box
+                component="span"
+                sx={{ marginLeft: 1, fontSize: 13, color: 'grey.600' }}
+              >
+                {usageDisplay}
+              </Box>
+            </Box>
+          </Box>
         </CardActionArea>
       </Card>
 

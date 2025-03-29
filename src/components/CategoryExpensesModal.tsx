@@ -5,7 +5,6 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Typography
 } from '@mui/material';
 import { Expense } from '../types/Expense';
 import CategoryExpenseTable from './CategoryExpenseTable';
