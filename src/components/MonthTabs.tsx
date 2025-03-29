@@ -32,9 +32,10 @@ const MonthTabs: React.FC<Props> = ({ expenses, children }) => {
         allowScrollButtonsMobile
         sx={{
           mb: 3,
+          mx: 'auto',
           px: 1,
           py: 0.5,
-          backgroundColor: '#eee',
+          backgroundColor: '#efefef',
           borderRadius: '10px',
           width: '93%',
           minHeight: 44,

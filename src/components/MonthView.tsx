@@ -23,9 +23,9 @@ const MonthView: React.FC<Props> = ({ expenses, categories }) => {
   return categoryIds.length === 0 ? (
     <Typography variant="body1">No expenses for this month.</Typography>
   ) : (
-    <Grid container spacing={2}>
+    <Grid container spacing={1} sx={{ bgcolor: '#fcfdff', height: '50vh' }}>
       {categoryIds.map((categoryId) => (
-        <Grid size={{ xs: 12, sm: 6, md: 4 }} key={categoryId}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }} sx={{ mx: '40px' }} key={categoryId}>
           <CategoryCard
             categoryId={categoryId}
             expenses={groupedByCategory[categoryId]}

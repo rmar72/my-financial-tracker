@@ -34,40 +34,53 @@ const CategoryCard: React.FC<Props> = ({ categoryId, expenses, categories }) => 
         sx={{
           display: 'flex',
           alignItems: 'center',
-          padding: 2,
-          minWidth: 280,
-          borderRadius: '12px',
-          boxShadow: '0 2px 4px 0 rgba(138, 148, 159, 0.2)',
+          padding: 1.5,
+          minWidth: 200,
+          maxWidth: 250,
+          borderRadius: '16px',
+          background: 'white',
+          boxShadow: `
+            6px 6px 12px #bebebe,
+            -6px -6px 12px #ffffff
+          `,
+          transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+          '&:hover': {
+            transform: 'scale(1.015)',
+            boxShadow: `
+              4px 4px 8px #bebebe,
+              -4px -4px 8px #ffffff
+            `
+          },
           '& > *:nth-of-type(1)': {
-            marginRight: 2
+            marginRight: 1.5
           },
           '& > *:nth-of-type(2)': {
             flex: 1
           }
         }}
       >
-          <CardActionArea
-            onClick={() => setOpen(true)}
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              width: '100%',
-              padding: '20px',
-              '& .MuiCardActionArea-focusHighlight': {
-                opacity: 0,
-                background: 'transparent'
-              }
-            }}
-          >
+        <CardActionArea
+          onClick={() => setOpen(true)}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            width: '100%',
+            padding: '12px',
+            '& .MuiCardActionArea-focusHighlight': {
+              opacity: 0,
+              background: 'transparent'
+            }
+          }}
+        >
           <Box>
-            <Typography sx={{ fontSize: 16, fontWeight: 600 }}>
+            <Typography sx={{ fontSize: 14, fontWeight: 600 }}>
               {categoryName}
             </Typography>
             <Typography
               sx={{
-                fontSize: 14,
+                fontSize: 12.5,
                 color: 'grey.600',
-                letterSpacing: '0.5px',
+                letterSpacing: '0.4px',
                 mb: 0.5
               }}
             >
@@ -98,7 +111,7 @@ const CategoryCard: React.FC<Props> = ({ categoryId, expenses, categories }) => 
               />
               <Box
                 component="span"
-                sx={{ marginLeft: 1, fontSize: 13, color: 'grey.600' }}
+                sx={{ marginLeft: 1, fontSize: 12, color: 'grey.600' }}
               >
                 {usageDisplay}
               </Box>
