@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 import { Expense } from '../types/Expense';
 import { useGetExpensesQuery } from '../features/api/expensesApi';
@@ -25,7 +25,16 @@ const ExpenseDashboard: React.FC<Props> = ({ categories }) => {
   }, [expenses]);
 
   const availableYears = Object.keys(groupedByYear).sort((a, b) => +b - +a);
-  const [selectedYear, setSelectedYear] = useState(availableYears[0] || '');
+
+  const currentYear = new Date().getFullYear().toString();
+  const [selectedYear, setSelectedYear] = useState(currentYear);
+
+  // 🧠 Ensure selectedYear is valid once availableYears is loaded
+  useEffect(() => {
+    if (!availableYears.includes(selectedYear) && availableYears.length > 0) {
+      setSelectedYear(availableYears.includes(currentYear) ? currentYear : availableYears[0]);
+    }
+  }, [availableYears, selectedYear, currentYear]);
 
   const expensesForSelectedYear = groupedByYear[selectedYear] || [];
 
