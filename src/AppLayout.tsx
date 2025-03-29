@@ -73,7 +73,7 @@ const AppLayout: React.FC = () => {
       {/* Main Content */}
       <Box
         component="main"
-        sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3, ml: `${drawerWidth}px` }}
+        sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
       >
         <Toolbar />
         <Outlet />
