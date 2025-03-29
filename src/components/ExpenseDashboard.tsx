@@ -7,7 +7,11 @@ import MonthTabs from './MonthTabs';
 import MonthView from './MonthView';
 import { format } from 'date-fns';
 
-const ExpenseDashboard: React.FC = () => {
+interface Props {
+  categories: { id: number; name: string }[];
+}
+
+const ExpenseDashboard: React.FC<Props> = ({ categories }) => {
   const { data: expenses = [], isLoading, isError } = useGetExpensesQuery();
 
   const groupedByYear = useMemo(() => {
@@ -47,7 +51,7 @@ const ExpenseDashboard: React.FC = () => {
 
       <MonthTabs expenses={expensesForSelectedYear}>
         {(filteredMonthExpenses) => (
-          <MonthView expenses={filteredMonthExpenses} />
+          <MonthView expenses={filteredMonthExpenses} categories={categories} />
         )}
       </MonthTabs>
     </Box>

@@ -64,7 +64,7 @@ const Expenses: React.FC = () => {
         />
       )}
 
-      <ExpenseDashboard />
+      <ExpenseDashboard categories={categories} />
     </Box>
   );
 };
