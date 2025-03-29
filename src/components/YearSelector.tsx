@@ -14,7 +14,21 @@ const YearSelector: React.FC<Props> = ({ years, selectedYear, onChange }) => {
 
   return (
     <Box mb={2} width={150}>
-      <FormControl fullWidth size="small">
+      <FormControl
+        fullWidth
+        size="small"
+        sx={{
+          backgroundColor: '#fff',
+          borderRadius: '10px',
+          boxShadow: 'inset 0 0px 0 1px rgba(0,0,0,0.05), 4px 4px 5px rgba(14, 12, 12, 0.05)',
+          '& .MuiInputBase-root': {
+            borderRadius: '10px',
+          },
+          '& .MuiOutlinedInput-notchedOutline': {
+            border: 'none'
+          }
+        }}
+      >
         <InputLabel id="year-select-label">Year</InputLabel>
         <Select
           labelId="year-select-label"
@@ -23,7 +37,7 @@ const YearSelector: React.FC<Props> = ({ years, selectedYear, onChange }) => {
           onChange={handleChange}
         >
           {years.map((year) => (
-            <MenuItem key={year} value={year}>
+            <MenuItem key={year} value={year} >
               {year}
             </MenuItem>
           ))}

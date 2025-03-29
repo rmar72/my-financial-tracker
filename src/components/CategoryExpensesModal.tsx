@@ -33,7 +33,19 @@ const CategoryExpensesModal: React.FC<Props> = ({
     fallbackName;
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="md"
+      fullWidth
+      slotProps={{
+        paper: {
+          sx: {
+            borderRadius: '12px',
+          }
+        }
+      }}
+    >
       <DialogTitle variant="h6" fontWeight="bold" fontSize={18}>
         {displayName} {} – Expenses
       </DialogTitle>
