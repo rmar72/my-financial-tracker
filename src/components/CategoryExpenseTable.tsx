@@ -42,24 +42,45 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, expenses, categorie
 
   return (
     <Box key={categoryId} mb={2}>
-      <TableContainer component={Paper}>
+<TableContainer
+  component={Paper}
+  sx={{
+    // backgroundColor: '#fff',
+    borderRadius: '12px',
+    boxShadow: '2px 2px 6px rgba(0,0,0,0.05), -1px -1px 3px rgba(255,255,255,0.6)',
+    overflow: 'hidden'
+  }}
+>
+
         <Table size="small">
           <TableHead>
             <TableRow>
               <TableCell sx={{ fontWeight: 600 }}>Date</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Amount</TableCell>
               <TableCell sx={{ fontWeight: 600 }}>Description</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>Amount</TableCell>
               <TableCell sx={{ fontWeight: 600 }}>Payment Type</TableCell>
+              <TableCell sx={{ fontWeight: 600 }} align="center">
+                Actions
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {expenses.map((expense) => (
-              <TableRow key={expense.id}>
+              <TableRow
+              key={expense.id}
+              hover
+              sx={{
+                transition: 'background-color 0.2s ease',
+                '&:hover': {
+                  backgroundColor: '#f7f7f7'
+                }
+              }}
+            >
                 <TableCell>{new Date(expense.date).toLocaleDateString()}</TableCell>
-                <TableCell>${Number(expense.amount).toFixed(2)}</TableCell>
                 <TableCell>{expense.description || '-'}</TableCell>
+                <TableCell>${Number(expense.amount).toFixed(2)}</TableCell>
                 <TableCell>{expense.payment.type}</TableCell>
-                <TableCell>
+                <TableCell align="center">
                   <IconButton size="small" onClick={() => handleEdit(expense)}>
                     <EditIcon fontSize="small" />
                   </IconButton>
@@ -67,6 +88,7 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, expenses, categorie
                     <DeleteIcon fontSize="small" />
                   </IconButton>
                 </TableCell>
+
               </TableRow>
             ))}
           </TableBody>
