@@ -4,7 +4,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Button
+  Button,
+  Typography
 } from '@mui/material';
 import { Expense } from '../types/Expense';
 import CategoryExpenseTable from './CategoryExpenseTable';
@@ -34,11 +35,14 @@ const CategoryExpensesModal: React.FC<Props> = ({
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle>{displayName} – Expenses</DialogTitle>
+      <DialogTitle>
+        <Typography variant="h6" fontWeight="bold" gutterBottom>
+          {displayName} {} – Expenses
+        </Typography>
+      </DialogTitle>
       <DialogContent dividers>
         <CategoryExpenseTable
           categoryId={categoryId}
-          categoryName={displayName}
           expenses={expenses}
           categories={categories}
         />

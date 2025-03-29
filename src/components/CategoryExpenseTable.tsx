@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   Box,
-  Typography,
   Table,
   TableBody,
   TableCell,
@@ -19,12 +18,11 @@ import EditExpenseModal from './EditExpenseModal';
 import { useUpdateExpenseMutation } from '../features/api/expensesApi';
 interface Props {
   categoryId: number;
-  categoryName: string;
   expenses: Expense[];
   categories: { id: number; name: string }[];
 }
 
-const CategoryExpenseTable: React.FC<Props> = ({ categoryId, categoryName, expenses, categories }) => {
+const CategoryExpenseTable: React.FC<Props> = ({ categoryId, expenses, categories }) => {
   const [deleteExpense] = useDeleteExpenseMutation();
   const [updateExpense] = useUpdateExpenseMutation();
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
@@ -44,9 +42,6 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, categoryName, expen
 
   return (
     <Box key={categoryId} mb={2}>
-      <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-        {categoryName}
-      </Typography>
       <TableContainer component={Paper}>
         <Table size="small">
           <TableHead>
