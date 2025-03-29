@@ -35,10 +35,8 @@ const CategoryExpensesModal: React.FC<Props> = ({
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle>
-        <Typography variant="h6" fontWeight="bold" gutterBottom>
-          {displayName} {} – Expenses
-        </Typography>
+      <DialogTitle variant="h6" fontWeight="bold" fontSize={18}>
+        {displayName} {} – Expenses
       </DialogTitle>
       <DialogContent dividers>
         <CategoryExpenseTable
