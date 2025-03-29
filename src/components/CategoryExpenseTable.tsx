@@ -49,7 +49,7 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, expenses, categorie
               <TableCell sx={{ fontWeight: 600 }}>Date</TableCell>
               <TableCell sx={{ fontWeight: 600 }}>Amount</TableCell>
               <TableCell sx={{ fontWeight: 600 }}>Description</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Payment ID</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>Payment Type</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -58,7 +58,7 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, expenses, categorie
                 <TableCell>{new Date(expense.date).toLocaleDateString()}</TableCell>
                 <TableCell>${Number(expense.amount).toFixed(2)}</TableCell>
                 <TableCell>{expense.description || '-'}</TableCell>
-                <TableCell>{expense.paymentId}</TableCell>
+                <TableCell>{expense.payment.type}</TableCell>
                 <TableCell>
                   <IconButton size="small" onClick={() => handleEdit(expense)}>
                     <EditIcon fontSize="small" />
