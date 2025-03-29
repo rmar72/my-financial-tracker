@@ -13,7 +13,7 @@ const YearSelector: React.FC<Props> = ({ years, selectedYear, onChange }) => {
   };
 
   return (
-    <Box mb={2} width={150}>
+    <Box mb={2} width={150} sx={{ ml: '30px' }}>
       <FormControl
         fullWidth
         size="small"

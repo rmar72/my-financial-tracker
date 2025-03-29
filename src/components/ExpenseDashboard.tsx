@@ -48,10 +48,6 @@ const ExpenseDashboard: React.FC<Props> = ({ categories }) => {
 
   return (
     <Box>
-      <Typography variant="h5" gutterBottom>
-        Expense Overview
-      </Typography>
-
       <YearSelector
         years={availableYears}
         selectedYear={selectedYear}
