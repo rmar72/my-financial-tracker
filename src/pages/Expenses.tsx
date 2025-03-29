@@ -2,18 +2,14 @@ import React, { useState } from 'react';
 import {
   Box,
   CircularProgress,
-  Typography,
+  Typography
 } from '@mui/material';
-import { useGetExpensesQuery, useAddExpenseMutation, useGetCategoriesQuery } from '../features/api/expensesApi';
-import { Expense } from '../types/Expense';
-import { format } from 'date-fns';
-import MonthlyExpenseGroup from '../components/MonthlyExpenseGroup';
+import { useAddExpenseMutation, useGetCategoriesQuery } from '../features/api/expensesApi';
 import AddExpenseForm from '../components/AddExpenseForm';
-
+import ExpenseDashboard from '../components/ExpenseDashboard';
 
 const Expenses: React.FC = () => {
-  const { data: expenses = [], isLoading, isError } = useGetExpensesQuery();
-  const { data: categories = [] } = useGetCategoriesQuery();
+  const { data: categories = [], isLoading: loadingCategories } = useGetCategoriesQuery();
   const [addExpense] = useAddExpenseMutation();
 
   const [formData, setFormData] = useState({
@@ -51,56 +47,24 @@ const Expenses: React.FC = () => {
     }
   };
 
-  const categoryMap = categories.reduce((acc, cur) => {
-    acc[cur.id] = cur.name;
-    return acc;
-  }, {} as Record<number, string>);
-
-  const groupExpensesByMonth = (expenses: Expense[]) => {
-    const grouped: Record<string, Expense[]> = {};
-    expenses.forEach((expense) => {
-      const monthKey = format(new Date(expense.date), 'MMMM yyyy');
-      if (!grouped[monthKey]) grouped[monthKey] = [];
-      grouped[monthKey].push(expense);
-    });
-    return grouped;
-  };
-
-  const expensesByMonth = groupExpensesByMonth(expenses);
-
   return (
     <Box>
       <Typography variant="h5" gutterBottom>
         Expenses
       </Typography>
 
-      <AddExpenseForm
-        formData={formData}
-        onChange={handleChange}
-        onSubmit={handleSubmit}
-        categories={categories}
-      />
-
-      {/* Expense Table */}
-      {isLoading ? (
-        <Box display="flex" justifyContent="center" mt={4}>
-          <CircularProgress />
-        </Box>
-      ) : isError ? (
-        <Box display="flex" justifyContent="center" mt={4}>
-          <Typography color="error">Failed to load expenses.</Typography>
-        </Box>
+      {loadingCategories ? (
+        <CircularProgress />
       ) : (
-        Object.entries(expensesByMonth).map(([month, monthExpenses]) => (
-          <MonthlyExpenseGroup
-            key={month}
-            month={month}
-            expenses={monthExpenses}
-            categoryMap={categoryMap}
-            categories={categories}
-          />
-        ))
+        <AddExpenseForm
+          formData={formData}
+          onChange={handleChange}
+          onSubmit={handleSubmit}
+          categories={categories}
+        />
       )}
+
+      <ExpenseDashboard />
     </Box>
   );
 };
