@@ -7,17 +7,17 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
-  IconButton,
-  TextField,
-  Button,
-  MenuItem
+  Paper
 } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import { Expense } from '../types/Expense';
-import { useDeleteExpenseMutation, useUpdateExpenseMutation, useAddExpenseMutation } from '../features/api/expensesApi';
+import {
+  useDeleteExpenseMutation,
+  useUpdateExpenseMutation,
+  useAddExpenseMutation
+} from '../features/api/expensesApi';
 import EditExpenseModal from './EditExpenseModal';
+import InlineAddExpenseRow from './InlineAddExpenseRow';
+import ExpenseRow from './ExpenseRow';
 
 interface Props {
   categoryId: number;
@@ -55,13 +55,13 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, expenses, categorie
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  
+
   const handleSelectChange = (e: React.ChangeEvent<{ name?: string; value: unknown }>) => {
     const name = e.target.name as string;
     const value = e.target.value as string;
     setFormData({ ...formData, [name]: value });
   };
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -108,105 +108,23 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, expenses, categorie
             </TableRow>
           </TableHead>
           <TableBody>
-            {/* 🔼 Inline Add Expense Row */}
-            <TableRow
-              hover
-              sx={{
-                transition: 'background-color 0.2s ease',
-                '&:hover': {
-                  backgroundColor: '#f0f0f0'
-                }
-              }}
-            >
-              <TableCell>
-                <TextField
-                  name="date"
-                  type="date"
-                  size="small"
-                  value={formData.date}
-                  onChange={handleInputChange}
-                  slotProps={{
-                    inputLabel: {
-                      shrink: true
-                    }
-                  }}
-                  fullWidth
-                  variant="outlined"
-                />
-              </TableCell>
-              <TableCell>
-                <TextField
-                  name="description"
-                  placeholder="Description"
-                  size="small"
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  fullWidth
-                  variant="outlined"
-                />
-              </TableCell>
-              <TableCell>
-                <TextField
-                  name="amount"
-                  type="number"
-                  placeholder="0.00"
-                  size="small"
-                  value={formData.amount}
-                  onChange={handleInputChange}
-                  fullWidth
-                  variant="outlined"
-                />
-              </TableCell>
-              <TableCell>
-                <TextField
-                  name="paymentId"
-                  select
-                  size="small"
-                  value={formData.paymentId}
-                  onChange={handleSelectChange}
-                  fullWidth
-                  variant="outlined"
-                >
-                  <MenuItem value="1">Debit</MenuItem>
-                  <MenuItem value="2">Credit</MenuItem>
-                  <MenuItem value="3">Cash</MenuItem>
-                </TextField>
-              </TableCell>
-              <TableCell align="center">
-                <Button variant="contained" size="small" type="submit" onClick={handleSubmit}>
-                  Add
-                </Button>
-              </TableCell>
-            </TableRow>
+            <InlineAddExpenseRow
+              formData={formData}
+              onInputChange={handleInputChange}
+              onSelectChange={handleSelectChange}
+              onSubmit={handleSubmit}
+            />
 
-            {/* 🔁 Latest Expenses on Top */}
             {expenses
               .slice()
               .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
               .map((expense) => (
-                <TableRow
+                <ExpenseRow
                   key={expense.id}
-                  hover
-                  sx={{
-                    transition: 'background-color 0.2s ease',
-                    '&:hover': {
-                      backgroundColor: '#f7f7f7'
-                    }
-                  }}
-                >
-                  <TableCell>{new Date(expense.date).toLocaleDateString()}</TableCell>
-                  <TableCell>{expense.description || '-'}</TableCell>
-                  <TableCell>${Number(expense.amount).toFixed(2)}</TableCell>
-                  <TableCell>{expense.payment.type}</TableCell>
-                  <TableCell align="center">
-                    <IconButton size="small" onClick={() => handleEdit(expense)}>
-                      <EditIcon fontSize="small" />
-                    </IconButton>
-                    <IconButton color="error" size="small" onClick={() => deleteExpense(expense.id)}>
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
+                  expense={expense}
+                  onEdit={handleEdit}
+                  onDelete={deleteExpense}
+                />
               ))}
           </TableBody>
         </Table>
