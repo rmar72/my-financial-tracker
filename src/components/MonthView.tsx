@@ -6,6 +6,7 @@ import {
   Card
  } from '@mui/material';
 import CategoryCard from './CategoryCard';
+import { useAddCategoryMutation } from '../features/api/expensesApi';
 
 interface Props {
   expenses: Expense[];
@@ -15,6 +16,7 @@ interface Props {
 }
 
 const MonthView: React.FC<Props> = ({ expenses, categories, selectedMonth, selectedYear }) => {
+  const [addCategory] = useAddCategoryMutation();
   const groupedByCategory = useMemo(() => {
     const grouped: Record<number, Expense[]> = {};
     expenses.forEach((expense) => {
@@ -75,7 +77,16 @@ const MonthView: React.FC<Props> = ({ expenses, categories, selectedMonth, selec
               `
             }
           }}
-          onClick={() => console.log('Add Category clicked')}
+          onClick={async () => {
+            const name = prompt('Enter new category name');
+            if (name && name.trim()) {
+              try {
+                await addCategory({ name: name.trim() }).unwrap();
+              } catch (err) {
+                console.error('Failed to add category', err);
+              }
+            }
+          }}
         >
           <Typography variant="body2" sx={{ fontWeight: 500, color: 'grey.600' }}>
             + Add Category

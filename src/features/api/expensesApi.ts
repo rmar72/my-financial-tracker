@@ -34,6 +34,14 @@ export const expensesApi = apiSlice.injectEndpoints({
       query: () => 'categories',
       providesTags: ['Category']
     }),
+    addCategory: builder.mutation<{ id: number; name: string }, { name: string }>({
+      query: (body) => ({
+        url: 'categories',
+        method: 'POST',
+        body
+      }),
+      invalidatesTags: ['Category']
+    }),
   })
 });
 
@@ -42,5 +50,6 @@ export const {
   useAddExpenseMutation,
   useDeleteExpenseMutation,
   useUpdateExpenseMutation,
-  useGetCategoriesQuery
+  useGetCategoriesQuery,
+  useAddCategoryMutation
 } = expensesApi;
