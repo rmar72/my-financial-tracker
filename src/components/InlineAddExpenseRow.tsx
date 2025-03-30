@@ -66,7 +66,7 @@ const InlineAddExpenseRow: React.FC<Props> = ({
             maxDate={new Date(Number(selectedYear), monthIndex + 1, 0)} // last day of month
             openTo='day'            
             views={['year', 'month', 'day']}
-            label={`Select day`}
+            label={`Select date`}
             slotProps={{
               textField: {
                 size: 'small',

@@ -26,7 +26,7 @@ const MonthView: React.FC<Props> = ({ expenses, categories, selectedMonth, selec
     return grouped;
   }, [expenses]);
 
-  const categoryIds = Object.keys(groupedByCategory).map(Number);
+  const categoryIds = categories.map((cat) => cat.id);
 
   return categoryIds.length === 0 ? (
     <Typography variant="body1">No expenses for this month.</Typography>
@@ -35,16 +35,16 @@ const MonthView: React.FC<Props> = ({ expenses, categories, selectedMonth, selec
       container
       spacing={3}
       sx={{
-        bgcolor: '#fcfdff',
+        bgcolor: '#f3e9e9',
         px: 3,
         py: 3,
       }}
     >
       {categoryIds.map((categoryId) => (
-        <Grid size={{ xs: 12, sm: 6, md: 3, lg: 3 }} key={categoryId}>
+        <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={categoryId}>
           <CategoryCard
             categoryId={categoryId}
-            expenses={groupedByCategory[categoryId]}
+            expenses={groupedByCategory[categoryId] || []}
             categories={categories}
             selectedMonth={selectedMonth}
             selectedYear={selectedYear}
@@ -52,7 +52,7 @@ const MonthView: React.FC<Props> = ({ expenses, categories, selectedMonth, selec
         </Grid>
       ))}
 
-      <Grid size={{ xs: 3.5, sm: 3.5, md: 3, lg: 3 }}>
+      <Grid size={{ xs: 12, sm: 6, md: 4, lg: 2 }}>
         <Card
           elevation={0}
           sx={{
@@ -60,6 +60,7 @@ const MonthView: React.FC<Props> = ({ expenses, categories, selectedMonth, selec
             alignItems: 'center',
             justifyContent: 'center',
             padding: 2,
+            mt: '12px',
             height: '105px',
             borderRadius: '16px',
             background: 'white',
