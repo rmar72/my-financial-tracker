@@ -6,7 +6,10 @@ import {
   Button,
   MenuItem
 } from '@mui/material';
-
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { parse, format } from 'date-fns';
 interface Props {
   formData: {
     amount: string;
@@ -30,8 +33,9 @@ const InlineAddExpenseRow: React.FC<Props> = ({
   onSelectChange,
   onSubmit
 }) => {
-  console.log('seelctedMonth', selectedMonth)
-  console.log('seelctedYear', selectedYear)
+
+  const monthIndex = new Date(`${selectedMonth} 1, ${selectedYear}`).getMonth();
+
   return (
     <TableRow
       hover
@@ -43,20 +47,36 @@ const InlineAddExpenseRow: React.FC<Props> = ({
       }}
     >
       <TableCell>
-        <TextField
-          name="date"
-          type="date"
-          size="small"
-          value={formData.date}
-          onChange={onInputChange}
-          slotProps={{
-            inputLabel: {
-              shrink: true
-            }
-          }}
-          fullWidth
-          variant="outlined"
-        />
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DatePicker
+            name="date"
+            value={formData.date ? parse(formData.date, 'yyyy-MM-dd', new Date()) : null}
+            onChange={(newValue) => {
+              if (newValue) {
+                const formatted = format(newValue, 'yyyy-MM-dd');
+                onInputChange({
+                  target: {
+                    name: 'date',
+                    value: formatted,
+                  },
+                } as React.ChangeEvent<HTMLInputElement>);
+              }
+            }}
+            minDate={new Date(Number(selectedYear), monthIndex, 1)}
+            maxDate={new Date(Number(selectedYear), monthIndex + 1, 0)} // last day of month
+            openTo='day'            
+            views={['year', 'month', 'day']}
+            label={`Select day`}
+            slotProps={{
+              textField: {
+                size: 'small',
+                fullWidth: true,
+                variant: 'outlined',
+              }
+            }}
+            displayWeekNumber
+          />
+        </LocalizationProvider>
       </TableCell>
       <TableCell>
         <TextField
