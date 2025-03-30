@@ -23,9 +23,11 @@ interface Props {
   categoryId: number;
   expenses: Expense[];
   categories: { id: number; name: string }[];
+  selectedMonth: string;
+  selectedYear: string,
 }
 
-const CategoryExpenseTable: React.FC<Props> = ({ categoryId, expenses, categories }) => {
+const CategoryExpenseTable: React.FC<Props> = ({ categoryId, expenses, categories, selectedMonth, selectedYear }) => {
   const [deleteExpense] = useDeleteExpenseMutation();
   const [updateExpense] = useUpdateExpenseMutation();
   const [addExpense] = useAddExpenseMutation();
@@ -110,6 +112,8 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, expenses, categorie
           <TableBody>
             <InlineAddExpenseRow
               formData={formData}
+              selectedMonth={selectedMonth}
+              selectedYear={selectedYear}
               onInputChange={handleInputChange}
               onSelectChange={handleSelectChange}
               onSubmit={handleSubmit}

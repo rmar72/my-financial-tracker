@@ -16,6 +16,8 @@ interface Props {
   expenses: Expense[];
   categoryName?: string;
   categories: { id: number; name: string }[];
+  selectedMonth: string;
+  selectedYear: string;
 }
 
 const CategoryExpensesModal: React.FC<Props> = ({
@@ -24,7 +26,9 @@ const CategoryExpensesModal: React.FC<Props> = ({
   categoryId,
   expenses,
   categoryName,
-  categories
+  categories,
+  selectedMonth,
+  selectedYear,
 }) => {
   const fallbackName = `Category ${categoryId}`;
   const displayName =
@@ -54,6 +58,8 @@ const CategoryExpensesModal: React.FC<Props> = ({
           categoryId={categoryId}
           expenses={expenses}
           categories={categories}
+          selectedMonth={selectedMonth}
+          selectedYear={selectedYear}
         />
       </DialogContent>
       <DialogActions>

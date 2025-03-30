@@ -54,12 +54,13 @@ const ExpenseDashboard: React.FC<Props> = ({ categories }) => {
         onChange={setSelectedYear}
       />
 
-      <MonthTabs expenses={expensesForSelectedYear}>
+      <MonthTabs expenses={expensesForSelectedYear} selectedYear={selectedYear}>
         {(filteredMonthExpenses, selectedMonth) => (
           <MonthView
             expenses={filteredMonthExpenses}
             categories={categories}
             selectedMonth={selectedMonth}
+            selectedYear={selectedYear}
           />
         )}
       </MonthTabs>

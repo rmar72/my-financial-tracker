@@ -14,9 +14,11 @@ interface Props {
   categoryId: number;
   expenses: Expense[];
   categories: { id: number; name: string }[];
+  selectedMonth: string;
+  selectedYear: string;
 }
 
-const CategoryCard: React.FC<Props> = ({ categoryId, expenses, categories }) => {
+const CategoryCard: React.FC<Props> = ({ categoryId, expenses, categories, selectedMonth, selectedYear }) => {
   const [open, setOpen] = useState(false);
 
   const total = expenses.reduce((sum, exp) => sum + Number(exp.amount), 0);
@@ -127,6 +129,8 @@ const CategoryCard: React.FC<Props> = ({ categoryId, expenses, categories }) => 
         expenses={expenses}
         categoryName={categoryName}
         categories={categories}
+        selectedMonth={selectedMonth}
+        selectedYear={selectedYear}
       />
     </>
   );

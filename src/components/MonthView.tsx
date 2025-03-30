@@ -7,9 +7,10 @@ interface Props {
   expenses: Expense[];
   categories: { id: number; name: string }[];
   selectedMonth: string;
+  selectedYear: string;
 }
 
-const MonthView: React.FC<Props> = ({ expenses, categories, selectedMonth }) => {
+const MonthView: React.FC<Props> = ({ expenses, categories, selectedMonth, selectedYear }) => {
   const groupedByCategory = useMemo(() => {
     const grouped: Record<number, Expense[]> = {};
     expenses.forEach((expense) => {
@@ -31,6 +32,8 @@ const MonthView: React.FC<Props> = ({ expenses, categories, selectedMonth }) => 
             categoryId={categoryId}
             expenses={groupedByCategory[categoryId]}
             categories={categories}
+            selectedMonth={selectedMonth}
+            selectedYear={selectedYear}
           />
         </Grid>
       ))}

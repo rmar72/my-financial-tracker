@@ -15,6 +15,8 @@ interface Props {
     categoryId: string;
     paymentId: string;
   };
+  selectedMonth: string;
+  selectedYear: string;
   onInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onSelectChange: (e: React.ChangeEvent<{ name?: string; value: unknown }>) => void;
   onSubmit: (e: React.FormEvent) => void;
@@ -22,10 +24,14 @@ interface Props {
 
 const InlineAddExpenseRow: React.FC<Props> = ({
   formData,
+  selectedMonth,
+  selectedYear,
   onInputChange,
   onSelectChange,
   onSubmit
 }) => {
+  console.log('seelctedMonth', selectedMonth)
+  console.log('seelctedYear', selectedYear)
   return (
     <TableRow
       hover
