@@ -29,9 +29,17 @@ const MonthView: React.FC<Props> = ({ expenses, categories, selectedMonth, selec
   return categoryIds.length === 0 ? (
     <Typography variant="body1">No expenses for this month.</Typography>
   ) : (
-    <Grid container spacing={1} sx={{ bgcolor: '#fcfdff', height: '50vh' }}>
+    <Grid
+      container
+      spacing={3}
+      sx={{
+        bgcolor: '#fcfdff',
+        px: 3,
+        py: 3,
+      }}
+    >
       {categoryIds.map((categoryId) => (
-        <Grid size={{ xs: 12, sm: 6, md: 3 }} sx={{ mx: '40px' }} key={categoryId}>
+        <Grid size={{ xs: 12, sm: 6, md: 3, lg: 3 }} key={categoryId}>
           <CategoryCard
             categoryId={categoryId}
             expenses={groupedByCategory[categoryId]}
@@ -42,7 +50,7 @@ const MonthView: React.FC<Props> = ({ expenses, categories, selectedMonth, selec
         </Grid>
       ))}
 
-    <Grid size={{ xs: 12, sm: 6, md: 3 }} sx={{ mx: '40px' }}>
+      <Grid size={{ xs: 3.5, sm: 3.5, md: 3, lg: 3 }}>
         <Card
           elevation={0}
           sx={{
@@ -50,10 +58,7 @@ const MonthView: React.FC<Props> = ({ expenses, categories, selectedMonth, selec
             alignItems: 'center',
             justifyContent: 'center',
             padding: 2,
-            minWidth: 200,
-            maxWidth: 250,
             height: '105px',
-            mt: '8px',
             borderRadius: '16px',
             background: 'white',
             boxShadow: `
@@ -70,14 +75,9 @@ const MonthView: React.FC<Props> = ({ expenses, categories, selectedMonth, selec
               `
             }
           }}
-          onClick={() => {
-            console.log('Add Category clicked');
-          }}
+          onClick={() => console.log('Add Category clicked')}
         >
-          <Typography
-            variant="body2"
-            sx={{ fontWeight: 500, color: 'grey.600' }}
-          >
+          <Typography variant="body2" sx={{ fontWeight: 500, color: 'grey.600' }}>
             + Add Category
           </Typography>
         </Card>
