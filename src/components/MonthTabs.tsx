@@ -6,7 +6,7 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 
 interface Props {
   expenses: Expense[];
-  children: (monthExpenses: Expense[]) => React.ReactNode;
+  children: (monthExpenses: Expense[], selectedMonth: string ) => React.ReactNode;
 }
 
 const MonthTabs: React.FC<Props> = ({ expenses, children }) => {
@@ -86,7 +86,7 @@ const MonthTabs: React.FC<Props> = ({ expenses, children }) => {
 
       <Fade in={true} timeout={250} key={selectedTab}>
         <Box sx={{ minHeight: 400 }}>
-          {children(filteredExpenses)}
+          {children(filteredExpenses, selectedMonth)}
         </Box>
       </Fade>
     </Box>

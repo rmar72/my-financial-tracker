@@ -6,9 +6,10 @@ import CategoryCard from './CategoryCard';
 interface Props {
   expenses: Expense[];
   categories: { id: number; name: string }[];
+  selectedMonth: string;
 }
 
-const MonthView: React.FC<Props> = ({ expenses, categories }) => {
+const MonthView: React.FC<Props> = ({ expenses, categories, selectedMonth }) => {
   const groupedByCategory = useMemo(() => {
     const grouped: Record<number, Expense[]> = {};
     expenses.forEach((expense) => {

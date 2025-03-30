@@ -55,8 +55,12 @@ const ExpenseDashboard: React.FC<Props> = ({ categories }) => {
       />
 
       <MonthTabs expenses={expensesForSelectedYear}>
-        {(filteredMonthExpenses) => (
-          <MonthView expenses={filteredMonthExpenses} categories={categories} />
+        {(filteredMonthExpenses, selectedMonth) => (
+          <MonthView
+            expenses={filteredMonthExpenses}
+            categories={categories}
+            selectedMonth={selectedMonth}
+          />
         )}
       </MonthTabs>
     </Box>
