@@ -43,7 +43,7 @@ const CategoryCard: React.FC<Props> = ({ categoryId, expenses, categories, selec
           background: 'white',
           boxShadow: `
             6px 6px 12px #bebebe,
-            -6px -6px 12px #ffffff
+            -0px -2px 12px #ffffff
           `,
           transition: 'transform 0.2s ease, box-shadow 0.2s ease',
           '&:hover': {
