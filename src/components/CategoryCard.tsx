@@ -12,17 +12,18 @@ import CategoryExpensesModal from './CategoryExpensesModal';
 
 interface Props {
   categoryId: number;
+  budgetAmount: number | null;
   expenses: Expense[];
   categories: { id: number; name: string }[];
   selectedMonth: string;
   selectedYear: string;
 }
 
-const CategoryCard: React.FC<Props> = ({ categoryId, expenses, categories, selectedMonth, selectedYear }) => {
+const CategoryCard: React.FC<Props> = ({ categoryId, budgetAmount, expenses, categories, selectedMonth, selectedYear }) => {
   const [open, setOpen] = useState(false);
 
   const total = expenses.reduce((sum, exp) => sum + Number(exp.amount), 0);
-  const budget = 500; // 🔧 Mock budget for now
+  const budget = budgetAmount ?? 0;
   const percentUsed = Math.min((total / budget) * 100, 100);
   const usageDisplay = `${Math.round(total)} / ${budget}`;
 

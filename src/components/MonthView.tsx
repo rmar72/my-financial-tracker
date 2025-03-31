@@ -7,7 +7,7 @@ import { useAddCategoryMutation } from '../features/api/expensesApi';
 
 interface Props {
   expenses: Expense[];
-  categories: { id: number; name: string }[];
+  categories: { id: number; name: string, budgetAmount: number | null }[];
   selectedMonth: string;
   selectedYear: string;
 }
@@ -46,6 +46,7 @@ const MonthView: React.FC<Props> = ({
         <Grid key={cat.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
           <CategoryCard
             categoryId={cat.id}
+            budgetAmount={cat.budgetAmount}
             expenses={groupedByCategory[cat.id] || []}
             categories={categories}
             selectedMonth={selectedMonth}

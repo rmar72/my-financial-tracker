@@ -56,7 +56,7 @@ export default function Categories() {
                 <TextField
                   label="Budget"
                   type="number"
-                  value={formState.budgetAmount}
+                  value={formState.budgetAmount ?? ''}
                   onChange={(e) => setFormState({ ...formState, budgetAmount: e.target.value })}
                 />
                 <Button variant="contained" onClick={handleSave}>Save</Button>
