@@ -8,7 +8,7 @@ import MonthView from './MonthView';
 import { format } from 'date-fns';
 
 interface Props {
-  categories: { id: number; name: string }[];
+  categories: { id: number; name: string; budgetAmount: number | null }[];
 }
 
 const ExpenseDashboard: React.FC<Props> = ({ categories }) => {

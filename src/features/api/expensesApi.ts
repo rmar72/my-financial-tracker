@@ -30,7 +30,7 @@ export const expensesApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Expense']
     }),    
-    getCategories: builder.query<{ id: number; name: string }[], void>({
+    getCategories: builder.query<{ id: number; name: string; budgetAmount: number | null }[], void>({
       query: () => 'categories',
       providesTags: ['Category']
     }),
@@ -42,6 +42,17 @@ export const expensesApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Category']
     }),
+    updateCategory: builder.mutation<
+        { id: number; name: string; budgetAmount: number | null },
+        { id: number; data: { name: string; budgetAmount: number | null } }
+      >({
+        query: ({ id, data }) => ({
+          url: `categories/${id}`,
+          method: 'PUT',
+          body: data
+        }),
+        invalidatesTags: ['Category']
+    }),
   })
 });
 
@@ -51,5 +62,6 @@ export const {
   useDeleteExpenseMutation,
   useUpdateExpenseMutation,
   useGetCategoriesQuery,
-  useAddCategoryMutation
+  useAddCategoryMutation,
+  useUpdateCategoryMutation
 } = expensesApi;
