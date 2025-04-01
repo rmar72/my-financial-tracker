@@ -115,6 +115,7 @@ const InlineAddExpenseRow: React.FC<Props> = ({
           <MenuItem value="2">Credit</MenuItem>
           <MenuItem value="3">Cash</MenuItem>
           <MenuItem value="4">Savings Acct</MenuItem>
+          <MenuItem value="5">Unemployment Card</MenuItem>
         </TextField>
       </TableCell>
       <TableCell align="center">
