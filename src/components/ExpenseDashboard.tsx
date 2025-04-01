@@ -5,8 +5,6 @@ import { useGetExpensesQuery } from '../features/api/expensesApi';
 import YearSelector from './YearSelector';
 import MonthTabs from './MonthTabs';
 import MonthView from './MonthView';
-import { format } from 'date-fns';
-
 interface Props {
   categories: { id: number; name: string; budgetAmount: number | null }[];
 }
@@ -14,10 +12,11 @@ interface Props {
 const ExpenseDashboard: React.FC<Props> = ({ categories }) => {
   const { data: expenses = [], isLoading, isError } = useGetExpensesQuery();
 
+  // ✅ Group expenses by UTC year
   const groupedByYear = useMemo(() => {
     const grouped: Record<string, Expense[]> = {};
     expenses.forEach(expense => {
-      const year = format(new Date(expense.date), 'yyyy');
+      const year = new Date(expense.date).getUTCFullYear().toString();
       if (!grouped[year]) grouped[year] = [];
       grouped[year].push(expense);
     });
@@ -25,11 +24,10 @@ const ExpenseDashboard: React.FC<Props> = ({ categories }) => {
   }, [expenses]);
 
   const availableYears = Object.keys(groupedByYear).sort((a, b) => +b - +a);
-
-  const currentYear = new Date().getFullYear().toString();
+  const currentYear = new Date().getUTCFullYear().toString();
   const [selectedYear, setSelectedYear] = useState(currentYear);
 
-  // 🧠 Ensure selectedYear is valid once availableYears is loaded
+  // ✅ Keep selectedYear valid if options change
   useEffect(() => {
     if (!availableYears.includes(selectedYear) && availableYears.length > 0) {
       setSelectedYear(availableYears.includes(currentYear) ? currentYear : availableYears[0]);
@@ -38,13 +36,8 @@ const ExpenseDashboard: React.FC<Props> = ({ categories }) => {
 
   const expensesForSelectedYear = groupedByYear[selectedYear] || [];
 
-  if (isLoading) {
-    return <Typography>Loading expenses...</Typography>;
-  }
-
-  if (isError) {
-    return <Typography color="error">Failed to load expenses.</Typography>;
-  }
+  if (isLoading) return <Typography>Loading expenses...</Typography>;
+  if (isError) return <Typography color="error">Failed to load expenses.</Typography>;
 
   return (
     <Box>

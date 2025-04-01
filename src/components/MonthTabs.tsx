@@ -12,15 +12,17 @@ interface Props {
 
 const MonthTabs: React.FC<Props> = ({ expenses, children, selectedYear }) => {
   const [selectedTab, setSelectedTab] = useState(0);
-  const selectedMonth = MONTHS[selectedTab];
+  const selectedMonth = MONTHS[selectedTab]; // e.g., "Jan", "Feb", etc.
+  const selectedMonthIndex = new Date(`${selectedMonth} 1, 2000`).getMonth(); // 0-based index
 
   const filteredExpenses = expenses.filter((expense) => {
     const date = new Date(expense.date);
-    const month = date.toLocaleString('en-US', {
-      month: 'short',
-      timeZone: 'UTC'
-    });
-    return month === selectedMonth;
+    const year = date.getUTCFullYear();
+    const month = date.getUTCMonth();
+    return (
+      year === Number(selectedYear) &&
+      month === selectedMonthIndex
+    );
   });
 
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
@@ -88,6 +90,7 @@ const MonthTabs: React.FC<Props> = ({ expenses, children, selectedYear }) => {
           />
         ))}
       </Tabs>
+
 
       <Fade in={true} timeout={250} key={selectedTab}>
         <Box sx={{ minHeight: 400 }}>
