@@ -15,7 +15,11 @@ const MonthTabs: React.FC<Props> = ({ expenses, children, selectedYear }) => {
   const selectedMonth = MONTHS[selectedTab];
 
   const filteredExpenses = expenses.filter((expense) => {
-    const month = new Date(expense.date).toLocaleString('default', { month: 'short' });
+    const date = new Date(expense.date);
+    const month = date.toLocaleString('en-US', {
+      month: 'short',
+      timeZone: 'UTC'
+    });
     return month === selectedMonth;
   });
 

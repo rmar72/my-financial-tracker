@@ -25,7 +25,7 @@ const ExpenseRow: React.FC<Props> = ({ expense, onEdit, onDelete }) => {
         }
       }}
     >
-      <TableCell>{new Date(expense.date).toLocaleDateString()}</TableCell>
+      <TableCell>{new Date(expense.date).toLocaleDateString('en-US', { timeZone: 'UTC' })}</TableCell>
       <TableCell>{expense.description || '-'}</TableCell>
       <TableCell>${Number(expense.amount).toFixed(2)}</TableCell>
       <TableCell>{expense.payment.type}</TableCell>
