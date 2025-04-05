@@ -34,8 +34,30 @@ const InlineAddExpenseRow: React.FC<Props> = ({
   onSubmit
 }) => {
 
+  const [errors, setErrors] = React.useState<Partial<typeof formData>>({});
+
   const monthIndex = new Date(`${selectedMonth} 1, ${selectedYear}`).getMonth();
 
+  const validate = () => {
+    const newErrors: Partial<typeof formData> = {};
+  
+    if (!formData.date) newErrors.date = 'Date is required';
+    if (!formData.description.trim()) newErrors.description = 'Description is required';
+    if (!formData.amount || parseFloat(formData.amount) <= 0) newErrors.amount = 'Amount must be greater than 0';
+    if (!formData.paymentId) newErrors.paymentId = 'Select a payment method';
+  
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+  
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validate()) {
+      onSubmit(e);
+    }
+  };
+  
   return (
     <TableRow
       hover
@@ -72,6 +94,8 @@ const InlineAddExpenseRow: React.FC<Props> = ({
                 size: 'small',
                 fullWidth: true,
                 variant: 'outlined',
+                error: !!errors.date,
+                helperText: errors.date
               }
             }}
             displayWeekNumber
@@ -87,6 +111,8 @@ const InlineAddExpenseRow: React.FC<Props> = ({
           onChange={onInputChange}
           fullWidth
           variant="outlined"
+          error={!!errors.description}
+          helperText={errors.description}
         />
       </TableCell>
       <TableCell>
@@ -99,6 +125,8 @@ const InlineAddExpenseRow: React.FC<Props> = ({
           onChange={onInputChange}
           fullWidth
           variant="outlined"
+          error={!!errors.amount}
+          helperText={errors.amount}
         />
       </TableCell>
       <TableCell>
@@ -110,6 +138,8 @@ const InlineAddExpenseRow: React.FC<Props> = ({
           onChange={onSelectChange}
           fullWidth
           variant="outlined"
+          error={!!errors.paymentId}
+          helperText={errors.paymentId}
         >
           <MenuItem value="1">Debit</MenuItem>
           <MenuItem value="2">Credit</MenuItem>
@@ -119,7 +149,7 @@ const InlineAddExpenseRow: React.FC<Props> = ({
         </TextField>
       </TableCell>
       <TableCell align="center">
-        <Button variant="contained" size="small" type="submit" onClick={onSubmit}>
+        <Button variant="contained" size="small" type="submit" onClick={handleSubmit}>
           Add
         </Button>
       </TableCell>
