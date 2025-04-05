@@ -56,11 +56,11 @@ const MonthView: React.FC<Props> = ({
       ))}
 
       <Grid key="add-category" size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-        <AddCategoryCard
-          onAdd={async (name) => {
-            await addCategory({ name }).unwrap();
-          }} 
-        />
+      <AddCategoryCard
+        onAdd={async ({ name, amount }) => {
+          await addCategory({ name, budgetAmount: amount }).unwrap();
+        }}
+      />
       </Grid>
     </Grid>
   );
