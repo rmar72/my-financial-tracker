@@ -1,3 +1,4 @@
+import { SharedContribution } from './SharedContribution';
 export interface Expense {
   id: number;
   amount: number;
@@ -7,4 +8,7 @@ export interface Expense {
   payment: { id: number, type: string },
   userId?: number;
   description?: string;
+  isShared: boolean;
+  sharedContributions: SharedContribution[];
+  netAmount: number;
 }
