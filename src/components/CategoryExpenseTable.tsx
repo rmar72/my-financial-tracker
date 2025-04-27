@@ -18,6 +18,7 @@ import {
 import EditExpenseModal from './EditExpenseModal';
 import InlineAddExpenseRow from './InlineAddExpenseRow';
 import ExpenseRow from './ExpenseRow';
+import MiniReceiptView from './MiniReceiptView';
 
 interface Props {
   categoryId: number;
@@ -87,12 +88,16 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, expenses, categorie
     }
   };
 
+  const [expandedExpenseId, setExpandedExpenseId] = useState<number | null>(null);
+  const handleExpand = (id: number) => {
+    setExpandedExpenseId(prev => (prev === id ? null : id));
+  };
+
   return (
     <Box key={categoryId} mb={2}>
       <TableContainer
         component={Paper}
         sx={{
-          borderRadius: '12px',
           boxShadow: '2px 2px 6px rgba(0,0,0,0.05), -1px -1px 3px rgba(255,255,255,0.6)',
           overflow: 'hidden'
         }}
@@ -118,18 +123,30 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, expenses, categorie
               onSelectChange={handleSelectChange}
               onSubmit={handleSubmit}
             />
-
             {expenses
               .slice()
               .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
               .map((expense) => (
-                <ExpenseRow
-                  key={expense.id}
-                  expense={expense}
-                  onEdit={handleEdit}
-                  onDelete={deleteExpense}
-                />
-              ))}
+                <React.Fragment key={expense.id}>
+                  <ExpenseRow
+                    expense={expense}
+                    onEdit={handleEdit}
+                    onDelete={deleteExpense}
+                    onExpand={handleExpand}
+                    isExpanded={expandedExpenseId === expense.id}
+                  />
+                  {expandedExpenseId === expense.id && (
+                    <TableRow sx={{ backgroundColor: '#f9f9f9' }}>
+                      <TableCell colSpan={5} sx={{ borderBottom: 0 }}>
+                        <MiniReceiptView
+                          contributions={expense.sharedContributions}
+                          grossAmount={Number(expense.amount)}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </React.Fragment>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
