@@ -24,9 +24,15 @@ const ExpenseRow: React.FC<Props> = ({ expense, onEdit, onDelete, onExpand, isEx
       hover
       sx={{
         transition: 'background-color 0.2s ease',
+        backgroundColor: isExpanded ? '#f0f9ff' : 'inherit',
         '&:hover': {
-          backgroundColor: '#f7f7f7'
-        }
+          backgroundColor: isExpanded ? '#f0f9ff' : '#f7f7f7'
+        },
+        '& td': {
+          borderBottom: isExpanded ? 'none' : undefined,
+          mb: isExpanded ? '10px' : 0
+        },
+        mb: isExpanded ? '10px' : 0
       }}
     >
       <TableCell>

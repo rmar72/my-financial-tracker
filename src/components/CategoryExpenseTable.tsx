@@ -136,7 +136,7 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, expenses, categorie
                     isExpanded={expandedExpenseId === expense.id}
                   />
                   {expandedExpenseId === expense.id && (
-                    <TableRow sx={{ backgroundColor: '#f9f9f9' }}>
+                    <TableRow sx={{ backgroundColor: '#f0f9ff' }}>
                       <TableCell colSpan={5} sx={{ borderBottom: 0, p: 0 }}>
                         <Box display="flex" alignItems="flex-start" mt={0.5} mb={2}>
                           {/* L-connector custom svg icon */}
@@ -146,7 +146,7 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, expenses, categorie
                             </svg>
                           </Box>
                           
-                          <Box flex={1}>
+                          <Box flex={1} sx={{ bgcolor: '#f0f9ff' }}>
                             <MiniReceiptView
                               contributions={expense.sharedContributions}
                               grossAmount={Number(expense.amount)}
