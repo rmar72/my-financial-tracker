@@ -4,13 +4,17 @@ import { SharedContribution } from '../types/SharedContribution';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+import { IconButton } from '@mui/material';
 
 interface Props {
   contributions: SharedContribution[];
   grossAmount: number;
+  onCollapse?: () => void;
 }
 
-const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount }) => {
+const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, onCollapse }) => {
   const [editMode, setEditMode] = useState(false);
 
   const [form, setForm] = useState({
@@ -57,7 +61,7 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount }) => {
         padding: 2,
         borderRadius: 2,
         boxShadow: 'inset 0 0 4px rgba(0,0,0,0.1)',
-        marginTop: 1,
+        marginTop: 0,
         marginBottom: 2
       }}
     >
@@ -66,7 +70,7 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount }) => {
       </Typography>
 
       {editMode ? (
-        <Grid container spacing={2} alignItems="center" mt={1}>
+        <Grid container spacing={2} alignItems="center" mt={0} sx={{ fontSize: '0.85rem' }}>
           <Grid size={{ xs: 12, sm: 3 }}>
             <TextField
               label="Contributor"
@@ -75,6 +79,14 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount }) => {
               onChange={handleChange}
               size="small"
               fullWidth
+              slotProps={{
+                input: {
+                  sx: {
+                    fontSize: '0.5rem',
+                    height: 32
+                  }
+                }
+              }} 
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 2 }}>
@@ -86,6 +98,14 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount }) => {
               onChange={handleChange}
               size="small"
               fullWidth
+              slotProps={{
+                input: {
+                  sx: {
+                    fontSize: '0.5rem',
+                    height: 34
+                  }
+                }
+              }}
             />
           </Grid>
           <Grid size={{ xs: 12, sm: 2 }}>
@@ -97,6 +117,14 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount }) => {
               onChange={handleChange}
               size="small"
               fullWidth
+              slotProps={{
+                input: {
+                  sx: {
+                    fontSize: '0.5rem',
+                    height: 34
+                  }
+                }
+              }}
             >
               <MenuItem value="Cash">Cash</MenuItem>
               <MenuItem value="Venmo">Venmo</MenuItem>
@@ -120,13 +148,35 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount }) => {
               />
             </LocalizationProvider>
           </Grid>
-          <Grid size={{ xs: 12, sm: 2 }} sx={{ display: 'flex', gap: 1 }}>
-            <Button variant="outlined" size="small" onClick={handleCancel}>
-              Cancel
-            </Button>
-            <Button variant="contained" size="small" onClick={handleSave}>
-              Save
-            </Button>
+          <Grid size={{ xs: 12, sm: 2 }} sx={{ display: 'flex', gap: 1.5, alignItems: 'center', justifyContent: 'center' }}>
+            <IconButton
+              size="small"
+              onClick={handleSave}
+              sx={{
+                backgroundColor: 'transparent',
+                color: 'green',
+                border: '1px solid green',
+                width: 32,
+                height: 32,
+                '&:hover': { backgroundColor: 'transparent' }
+              }}
+            >
+              <CheckIcon fontSize="small" />
+            </IconButton>
+            <IconButton
+              size="small"
+              onClick={handleCancel}
+              sx={{
+                backgroundColor: 'transparent',
+                color: 'red',
+                border: '1px solid red',
+                width: 32,
+                height: 32,
+                '&:hover': { backgroundColor: 'transparent' }
+              }}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
           </Grid>
         </Grid>
       ) : (
