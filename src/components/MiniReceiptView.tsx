@@ -14,10 +14,12 @@ import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 interface Props {
   contributions: SharedContribution[];
   grossAmount: number;
+  netAmount: number;
+  contributionsAmount: number;
   onCollapse: () => void;
 }
 
-const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, onCollapse }) => {
+const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, netAmount, contributionsAmount, onCollapse }) => {
   const [editMode, setEditMode] = useState(false);
 
   const [form, setForm] = useState({
@@ -98,7 +100,7 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, onCollap
             ml: 2
           }}
         >
-          Net Amount: ${grossAmount.toFixed(2)}
+          Net Amount: {netAmount ? `$ ${netAmount.toFixed(2)}` : 'N/A'}
         </Box>
         <Box
           sx={{
@@ -113,7 +115,7 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, onCollap
             ml: 2,
           }}
         >
-          Contributions Amount: ${grossAmount.toFixed(2)}
+          Contributions Amount: {contributionsAmount ? `$ ${contributionsAmount.toFixed(2)}` : 'N/A'}
         </Box>
         <Divider sx={{ mt: "-10px", mb: 2 }} />
       </Box>

@@ -126,7 +126,9 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, expenses, categorie
             {expenses
               .slice()
               .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-              .map((expense) => (
+              .map((expense) => {
+                const contributionsAmount = expense.sharedContributions.reduce((acc: number, contr: {amount: number }) => acc += contr.amount, 0)
+                return (
                 <React.Fragment key={expense.id}>
                   <ExpenseRow
                     expense={expense}
@@ -150,6 +152,8 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, expenses, categorie
                             <MiniReceiptView
                               contributions={expense.sharedContributions}
                               grossAmount={Number(expense.amount)}
+                              netAmount={contributionsAmount ? Number(expense.amount - contributionsAmount) : 0}
+                              contributionsAmount={Number(contributionsAmount)}
                               onCollapse={() => setExpandedExpenseId(null)}
                             />
                           </Box>
@@ -158,7 +162,7 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, expenses, categorie
                     </TableRow>
                   )}
                 </React.Fragment>
-            ))}
+            )})}
           </TableBody>
         </Table>
       </TableContainer>
