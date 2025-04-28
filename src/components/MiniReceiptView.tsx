@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Stack, Button, TextField, MenuItem, Grid } from '@mui/material';
+import { Box, Stack, Button, TextField, MenuItem, Grid, Divider } from '@mui/material';
 import { SharedContribution } from '../types/SharedContribution';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -7,11 +7,14 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import { IconButton } from '@mui/material';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import AddCardIcon from '@mui/icons-material/AddCard';
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 
 interface Props {
   contributions: SharedContribution[];
   grossAmount: number;
-  onCollapse?: () => void;
+  onCollapse: () => void;
 }
 
 const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, onCollapse }) => {
@@ -41,6 +44,7 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, onCollap
   };
 
   const handleCancel = () => {
+    onCollapse();
     setEditMode(false);
     setForm({
       contributor: '',
@@ -62,22 +66,56 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, onCollap
         borderRadius: 2,
         boxShadow: 'inset 0 0 4px rgba(0,0,0,0.1)',
         marginTop: 0,
-        marginBottom: 2
+        marginBottom: 2,
+        mr: 1,
       }}
     >
-      <Box
-        sx={{
-          backgroundColor: '#e0f2f1',
-          padding: '6px 12px',
-          borderRadius: '8px',
-          fontWeight: 600,
-          fontSize: '0.85rem',
-          color: '#00695c',
-          display: 'inline-block',
-          mb: 2
-        }}
-      >
-        Gross Amount: ${grossAmount.toFixed(2)}
+      <Box sx={{ textAlign: 'center' }}>
+        <Box
+          sx={{
+            backgroundColor: '#C9E4DE',
+            padding: '6px 12px',
+            borderRadius: '8px',
+            fontWeight: 600,
+            fontSize: '0.85rem',
+            color: '#00695c',
+            display: 'inline-block',
+            mb: 2,
+          }}
+        >
+          Gross Amount: ${grossAmount.toFixed(2)}
+        </Box>
+        <Box
+          sx={{
+            backgroundColor: '#C6DEF1',
+            padding: '6px 12px',
+            borderRadius: '8px',
+            fontWeight: 600,
+            fontSize: '0.85rem',
+            color: '#00695c',
+            display: 'inline-block',
+            mb: 2,
+            ml: 2
+          }}
+        >
+          Net Amount: ${grossAmount.toFixed(2)}
+        </Box>
+        <Box
+          sx={{
+            backgroundColor: '#FAEDCB',
+            padding: '6px 12px',
+            borderRadius: '8px',
+            fontWeight: 600,
+            fontSize: '0.85rem',
+            color: '#00695c',
+            display: 'inline-block',
+            mb: 2,
+            ml: 2,
+          }}
+        >
+          Contributions Amount: ${grossAmount.toFixed(2)}
+        </Box>
+        <Divider sx={{ mt: "-10px", mb: 2 }} />
       </Box>
 
       {editMode ? (
@@ -96,7 +134,12 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, onCollap
                   fontSize: '0.8rem',
                   height: 36,
                   padding: '6px 10px'
-                }
+                },
+                startAdornment: (
+                  <Box component="span" sx={{ color: 'green', fontSize: '0.9rem', position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)' }}>
+                    <PermIdentityIcon />
+                  </Box>
+                ),
               },
               inputLabel: {
                 sx: {
@@ -122,8 +165,13 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, onCollap
                 sx: {
                   fontSize: '0.8rem',
                   height: 36,
-                  padding: '6px 10px'
-                }
+                  pl: '20px'
+                },
+                startAdornment: (
+                  <Box component="span" sx={{ color: 'green', fontSize: '0.9rem', position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)' }}>
+                    <AttachMoneyIcon />
+                  </Box>
+                ),
               },
               inputLabel: {
                 sx: {
@@ -150,7 +198,12 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, onCollap
                   fontSize: '0.8rem',
                   height: 36,
                   padding: '6px 10px'
-                }
+                },
+                startAdornment: (
+                  <Box component="span" sx={{ color: 'green', fontSize: '0.9rem', position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)' }}>
+                    <AddCardIcon />
+                  </Box>
+                ),
               },
               inputLabel: {
                 sx: {

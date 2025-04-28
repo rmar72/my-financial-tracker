@@ -140,7 +140,7 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, expenses, categorie
                       <TableCell colSpan={5} sx={{ borderBottom: 0, p: 0 }}>
                         <Box display="flex" alignItems="flex-start" mt={0.5} mb={2}>
                           {/* L-connector custom svg icon */}
-                          <Box sx={{ ml: 2, mr: 2, mt: 1.5 }}>
+                          <Box sx={{ ml: 1, mr: 1, mt: 1 }}>
                             <svg width="20" height="32" viewBox="0 0 20 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                               <path d="M10 0V20H20" stroke="#bbb" strokeWidth="2" />
                             </svg>
