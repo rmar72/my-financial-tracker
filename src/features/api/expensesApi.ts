@@ -1,5 +1,6 @@
 import { apiSlice } from './apiSlice';
 import { Expense } from '../../types/Expense';
+import { SharedContribution } from '../../types/SharedContribution';
 
 export const expensesApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -56,6 +57,17 @@ export const expensesApi = apiSlice.injectEndpoints({
         }),
         invalidatesTags: ['Category']
     }),
+    addSharedContribution: builder.mutation<
+      SharedContribution,
+      Partial<SharedContribution> & { expenseId: number }
+    >({
+      query: ({ expenseId, ...contribution }) => ({
+        url: `expenses/${expenseId}/shared-contributions`, // ✅ correct url
+        method: 'POST',
+        body: contribution // ✅ now matches backend expecting { amount, contributor, method, date }
+      }),
+      invalidatesTags: ['Expense']
+    }),
   })
 });
 
@@ -66,5 +78,6 @@ export const {
   useUpdateExpenseMutation,
   useGetCategoriesQuery,
   useAddCategoryMutation,
-  useUpdateCategoryMutation
+  useUpdateCategoryMutation,
+  useAddSharedContributionMutation
 } = expensesApi;

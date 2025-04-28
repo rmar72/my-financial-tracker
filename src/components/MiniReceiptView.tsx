@@ -10,6 +10,7 @@ import { IconButton } from '@mui/material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import { useGetExpensesQuery, useUpdateExpenseMutation, useAddSharedContributionMutation } from '../features/api/expensesApi';
 
 interface Props {
   contributions: SharedContribution[];
@@ -17,9 +18,13 @@ interface Props {
   netAmount: number;
   contributionsAmount: number;
   onCollapse: () => void;
+  expenseId: number;
 }
 
-const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, netAmount, contributionsAmount, onCollapse }) => {
+const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, netAmount, contributionsAmount, onCollapse, expenseId }) => {
+  const [addSharedContribution] = useAddSharedContributionMutation();
+  const [updateExpense] = useUpdateExpenseMutation();
+  const { refetch } = useGetExpensesQuery();
   const [editMode, setEditMode] = useState(false);
 
   const [form, setForm] = useState({
@@ -56,8 +61,34 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, netAmoun
     });
   };
 
-  const handleSave = () => {
-    console.log('Saving contribution:', form);
+
+  const handleSave = async () => {
+    try {
+      await addSharedContribution({
+        contributor: form.contributor,
+        amount: parseFloat(form.amount),
+        method: form.method,
+        date: form.date.toISOString(),
+        expenseId
+      }).unwrap();
+
+      await updateExpense({
+        id: expenseId,
+        data: { isShared: true }
+      }).unwrap();
+
+      setEditMode(false);
+      setForm({
+        contributor: '',
+        amount: '',
+        method: '',
+        date: new Date()
+      });
+
+      await refetch();
+    } catch (err) {
+      console.error('Failed to save contribution or update expense', err);
+    }
   };
 
   return (
@@ -195,9 +226,9 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, netAmoun
               }}
             >
               <MenuItem value="Cash">Cash</MenuItem>
-              <MenuItem value="Venmo">Venmo</MenuItem>
-              <MenuItem value="CashApp">CashApp</MenuItem>
               <MenuItem value="Zelle">Zelle</MenuItem>
+              <MenuItem value="Venmo">Venmo</MenuItem>
+              <MenuItem value="Bank Transfer">Bank Transfer</MenuItem>
               <MenuItem value="Other">Other</MenuItem>
             </TextField>
           </Grid>

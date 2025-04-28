@@ -108,7 +108,7 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, expenses, categorie
               <TableCell sx={{ fontWeight: 600 }}>Date</TableCell>
               <TableCell sx={{ fontWeight: 600 }}>Description</TableCell>
               <TableCell sx={{ fontWeight: 600 }}>Amount</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Payment Type</TableCell>
+              <TableCell sx={{ fontWeight: 600, textAlign: 'center' }}>Payment Type</TableCell>
               <TableCell sx={{ fontWeight: 600 }} align="center">
                 Actions
               </TableCell>
@@ -155,6 +155,7 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, expenses, categorie
                               netAmount={contributionsAmount ? Number(expense.amount - contributionsAmount) : 0}
                               contributionsAmount={Number(contributionsAmount)}
                               onCollapse={() => setExpandedExpenseId(null)}
+                              expenseId={expense.id}
                             />
                           </Box>
                         </Box>

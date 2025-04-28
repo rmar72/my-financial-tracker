@@ -4,12 +4,14 @@ import {
   TableRow,
   TextField,
   Button,
-  MenuItem
+  MenuItem,
+  Box
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { parse, format } from 'date-fns';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 interface Props {
   formData: {
     amount: string;
@@ -127,6 +129,16 @@ const InlineAddExpenseRow: React.FC<Props> = ({
           variant="outlined"
           error={!!errors.amount}
           helperText={errors.amount}
+          slotProps={{
+            input: {
+              sx: { fontSize: '1rem', height: 36, pl: '28px' },
+              startAdornment: (
+                <Box sx={{ color: 'green', fontSize: '1rem', position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)' }}>
+                  <AttachMoneyIcon fontSize="small" sx={{ mt: 0.5 }} />
+                </Box>
+              )
+            },
+          }}
         />
       </TableCell>
       <TableCell>
