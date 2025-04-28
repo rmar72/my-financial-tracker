@@ -117,175 +117,152 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, netAmoun
         >
           Contributions Amount: {contributionsAmount ? `$ ${contributionsAmount.toFixed(2)}` : 'N/A'}
         </Box>
-        <Divider sx={{ mt: "-10px", mb: 2 }} />
+        <Divider sx={{ mt: "-5px", mb: 2.5 }} />
       </Box>
 
       {editMode ? (
         <Grid container spacing={2} alignItems="center" mt={0}>
-        <Grid size={{ xs: 12, sm: 3 }}>
-          <TextField
-            label="Contributor"
-            name="contributor"
-            value={form.contributor}
-            onChange={handleChange}
-            size="small"
-            fullWidth
-            slotProps={{
-              input: {
-                sx: {
-                  fontSize: '0.8rem',
-                  height: 36,
-                  padding: '6px 10px'
-                },
-                startAdornment: (
-                  <Box component="span" sx={{ color: 'green', fontSize: '0.9rem', position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)' }}>
-                    <PermIdentityIcon />
-                  </Box>
-                ),
-              },
-              inputLabel: {
-                sx: {
-                  fontSize: '0.93rem',
-                  top: '-4px'
-                }
-              }
-            }}
-          />
-        </Grid>
-      
-        <Grid size={{ xs: 12, sm: 2 }}>
-          <TextField
-            label="Amount"
-            name="amount"
-            type="number"
-            value={form.amount}
-            onChange={handleChange}
-            size="small"
-            fullWidth
-            slotProps={{
-              input: {
-                sx: {
-                  fontSize: '0.8rem',
-                  height: 36,
-                  pl: '20px'
-                },
-                startAdornment: (
-                  <Box component="span" sx={{ color: 'green', fontSize: '0.9rem', position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)' }}>
-                    <AttachMoneyIcon />
-                  </Box>
-                ),
-              },
-              inputLabel: {
-                sx: {
-                  fontSize: '0.93rem',
-                  top: '-4px'
-                }
-              }
-            }}
-          />
-        </Grid>
-      
-        <Grid size={{ xs: 12, sm: 2 }}>
-          <TextField
-            label="Method"
-            name="method"
-            select
-            value={form.method}
-            onChange={handleChange}
-            size="small"
-            fullWidth
-            slotProps={{
-              input: {
-                sx: {
-                  fontSize: '0.8rem',
-                  height: 36,
-                  padding: '6px 10px'
-                },
-                startAdornment: (
-                  <Box component="span" sx={{ color: 'green', fontSize: '0.9rem', position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)' }}>
-                    <AddCardIcon />
-                  </Box>
-                ),
-              },
-              inputLabel: {
-                sx: {
-                  fontSize: '0.93rem',
-                  top: '-4px'
-                }
-              }
-            }}
-          >
-            <MenuItem value="Cash">Cash</MenuItem>
-            <MenuItem value="Venmo">Venmo</MenuItem>
-            <MenuItem value="CashApp">CashApp</MenuItem>
-            <MenuItem value="Zelle">Zelle</MenuItem>
-            <MenuItem value="Other">Other</MenuItem>
-          </TextField>
-        </Grid>
-      
-        <Grid size={{ xs: 12, sm: 3 }}>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              label="Date"
-              value={form.date}
-              onChange={handleDateChange}
+          <Grid size={{ xs: 12, sm: 3 }}>
+            <TextField
+              label="Contributor"
+              name="contributor"
+              value={form.contributor}
+              onChange={handleChange}
+              size="small"
+              fullWidth
               slotProps={{
-                textField: {
-                  size: 'small',
-                  fullWidth: true,
-                  slotProps: {
-                    input: {
-                      sx: {
-                        fontSize: '0.8rem',
-                        height: 36,
-                        padding: '6px 10px'
-                      }
-                    },
-                    inputLabel: {
-                      sx: {
-                        fontSize: '0.8rem',
-                        top: '-4px'
-                      }
-                    }
-                  }
+                input: {
+                  sx: { fontSize: '1rem', height: 36, pl: '30px' },
+                  startAdornment: (
+                    <Box sx={{ color: 'grey', fontSize: '1rem', position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)' }}>
+                      <PermIdentityIcon fontSize="small" sx={{ mt: 0.5 }} />
+                    </Box>
+                  )
+                },
+                inputLabel: {
+                  sx: { fontSize: '1rem', top: '-4px' }
                 }
               }}
             />
-          </LocalizationProvider>
+          </Grid>
+
+          <Grid size={{ xs: 12, sm: 2.2 }}>
+            <TextField
+              label="Amount"
+              name="amount"
+              type="number"
+              value={form.amount}
+              onChange={handleChange}
+              size="small"
+              fullWidth
+              slotProps={{
+                input: {
+                  sx: { fontSize: '1rem', height: 36, pl: '28px' },
+                  startAdornment: (
+                    <Box sx={{ color: 'green', fontSize: '1rem', position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)' }}>
+                      <AttachMoneyIcon fontSize="small" sx={{ mt: 0.5 }} />
+                    </Box>
+                  )
+                },
+                inputLabel: {
+                  sx: { fontSize: '1rem', top: '-4px' }
+                }
+              }}
+            />
+          </Grid>
+
+          <Grid size={{ xs: 12, sm: 2.5 }}>
+            <TextField
+              label="Method"
+              name="method"
+              select
+              value={form.method}
+              onChange={handleChange}
+              size="small"
+              fullWidth
+              slotProps={{
+                input: {
+                  sx: { fontSize: '1rem', height: 36, pl: '34px' },
+                  startAdornment: (
+                    <Box sx={{ color: 'grey', fontSize: '1rem', position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)' }}>
+                      <AddCardIcon fontSize="small" sx={{ mt: 0.5 }} />
+                    </Box>
+                  )
+                },
+                inputLabel: {
+                  sx: { fontSize: '1rem', top: '-4px' }
+                }
+              }}
+            >
+              <MenuItem value="Cash">Cash</MenuItem>
+              <MenuItem value="Venmo">Venmo</MenuItem>
+              <MenuItem value="CashApp">CashApp</MenuItem>
+              <MenuItem value="Zelle">Zelle</MenuItem>
+              <MenuItem value="Other">Other</MenuItem>
+            </TextField>
+          </Grid>
+
+          <Grid size={{ xs: 12, sm: 3 }}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label="Date"
+                value={form.date}
+                onChange={handleDateChange}
+                slotProps={{
+                  textField: {
+                    size: 'small',
+                    fullWidth: true,
+                    sx: {
+                      width: 150,
+                      '& .MuiInputBase-root': {
+                        height: 36
+                      }
+                    },
+                    slotProps: {
+                      input: {
+                        sx: { fontSize: '0.95rem', pl: 1 }
+                      },
+                      inputLabel: {
+                        sx: { fontSize: '1rem', top: '-4px' }
+                      }
+                    }
+                  }
+                }}
+              />
+            </LocalizationProvider>
+          </Grid>
+
+          <Grid size={{ xs: 12, sm: 1 }} sx={{ display: 'flex', gap: 2, alignItems: 'center', justifyContent: 'center' }}>
+            <IconButton
+              size="small"
+              onClick={handleSave}
+              sx={{
+                backgroundColor: 'transparent',
+                color: 'green',
+                border: '1px solid green',
+                width: 30,
+                height: 30,
+                '&:hover': { backgroundColor: 'transparent' }
+              }}
+            >
+              <CheckIcon fontSize="small" />
+            </IconButton>
+            <IconButton
+              size="small"
+              onClick={handleCancel}
+              sx={{
+                backgroundColor: 'transparent',
+                color: 'red',
+                border: '1px solid red',
+                width: 30,
+                height: 30,
+                '&:hover': { backgroundColor: 'transparent' }
+              }}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </Grid>
         </Grid>
-      
-        <Grid size={{ xs: 12, sm: 2 }} sx={{ display: 'flex', gap: 1.5, alignItems: 'center', justifyContent: 'center' }}>
-          <IconButton
-            size="small"
-            onClick={handleSave}
-            sx={{
-              backgroundColor: 'transparent',
-              color: 'green',
-              border: '1px solid green',
-              width: 32,
-              height: 32,
-              '&:hover': { backgroundColor: 'transparent' }
-            }}
-          >
-            <CheckIcon fontSize="small" />
-          </IconButton>
-          <IconButton
-            size="small"
-            onClick={handleCancel}
-            sx={{
-              backgroundColor: 'transparent',
-              color: 'red',
-              border: '1px solid red',
-              width: 32,
-              height: 32,
-              '&:hover': { backgroundColor: 'transparent' }
-            }}
-          >
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        </Grid>
-      </Grid>
-      
       ) : (
         <Stack spacing={1}>
           {contributions.map((contrib) => (
