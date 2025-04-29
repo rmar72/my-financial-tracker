@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Stack, Button, TextField, MenuItem, Grid, Divider } from '@mui/material';
+import { Box, Stack, Button, TextField, MenuItem, Grid, Divider, IconButton } from '@mui/material';
 import { SharedContribution } from '../types/SharedContribution';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
-import { IconButton } from '@mui/material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
-import { useGetExpensesQuery, useUpdateExpenseMutation, useAddSharedContributionMutation } from '../features/api/expensesApi';
+import { useGetExpensesQuery, useUpdateExpenseMutation, useAddSharedContributionMutation, useUpdateSharedContributionMutation } from '../features/api/expensesApi';
 
 interface Props {
   contributions: SharedContribution[];
@@ -24,8 +23,10 @@ interface Props {
 const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, netAmount, contributionsAmount, onCollapse, expenseId }) => {
   const [addSharedContribution] = useAddSharedContributionMutation();
   const [updateExpense] = useUpdateExpenseMutation();
+  const [updateSharedContribution] = useUpdateSharedContributionMutation();
   const { refetch } = useGetExpensesQuery();
   const [editMode, setEditMode] = useState(false);
+  const [editingContribution, setEditingContribution] = useState<SharedContribution | null>(null);
 
   const [form, setForm] = useState({
     contributor: '',
@@ -40,6 +41,18 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, netAmoun
     }
   }, [contributions]);
 
+  useEffect(() => {
+    if (editingContribution) {
+      setForm({
+        contributor: editingContribution.contributor,
+        amount: editingContribution.amount.toString(),
+        method: editingContribution.method,
+        date: new Date(editingContribution.date)
+      });
+      setEditMode(true);
+    }
+  }, [editingContribution]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -53,6 +66,7 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, netAmoun
   const handleCancel = () => {
     onCollapse();
     setEditMode(false);
+    setEditingContribution(null);
     setForm({
       contributor: '',
       amount: '',
@@ -61,23 +75,33 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, netAmoun
     });
   };
 
-
   const handleSave = async () => {
     try {
-      await addSharedContribution({
-        contributor: form.contributor,
-        amount: parseFloat(form.amount),
-        method: form.method,
-        date: form.date.toISOString(),
-        expenseId
-      }).unwrap();
+      if (editingContribution) {
+        await updateSharedContribution({
+          id: editingContribution.id,
+          contributor: form.contributor,
+          amount: parseFloat(form.amount),
+          method: form.method,
+          date: form.date.toISOString(),
+        }).unwrap();
+      } else {
+        await addSharedContribution({
+          contributor: form.contributor,
+          amount: parseFloat(form.amount),
+          method: form.method,
+          date: form.date.toISOString(),
+          expenseId
+        }).unwrap();
 
-      await updateExpense({
-        id: expenseId,
-        data: { isShared: true }
-      }).unwrap();
+        await updateExpense({
+          id: expenseId,
+          data: { isShared: true }
+        }).unwrap();
+      }
 
       setEditMode(false);
+      setEditingContribution(null);
       setForm({
         contributor: '',
         amount: '',
@@ -248,14 +272,6 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, netAmoun
                       '& .MuiInputBase-root': {
                         height: 36
                       }
-                    },
-                    slotProps: {
-                      input: {
-                        sx: { fontSize: '0.95rem', pl: 1 }
-                      },
-                      inputLabel: {
-                        sx: { fontSize: '1rem', top: '-4px' }
-                      }
                     }
                   }
                 }}
@@ -297,8 +313,17 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, netAmoun
       ) : (
         <Stack spacing={1}>
           {contributions.map((contrib) => (
-            <Box key={contrib.id} sx={{ fontSize: 14, color: 'grey.800' }}>
-              {contrib.contributor} paid ${Number(contrib.amount).toFixed(2)} via {contrib.method} on {new Date(contrib.date).toLocaleDateString('en-US')}
+            <Box key={contrib.id} sx={{ fontSize: 14, color: 'grey.800', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Box>
+                {contrib.contributor} paid ${Number(contrib.amount).toFixed(2)} via {contrib.method} on {new Date(contrib.date).toLocaleDateString('en-US')}
+              </Box>
+              <Button
+                size="small"
+                variant="outlined"
+                onClick={() => setEditingContribution(contrib)}
+              >
+                Edit
+              </Button>
             </Box>
           ))}
 
@@ -306,9 +331,12 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, netAmoun
             <Button
               size="small"
               variant="outlined"
-              onClick={() => setEditMode(true)}
+              onClick={() => {
+                setEditingContribution(null);
+                setEditMode(true);
+              }}
             >
-              Edit
+              Add New
             </Button>
           </Box>
         </Stack>
