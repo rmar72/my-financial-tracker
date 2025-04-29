@@ -68,6 +68,17 @@ export const expensesApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Expense']
     }),
+    updateSharedContribution: builder.mutation<
+      SharedContribution,
+      { id: number; contributor: string; amount: number; method: string; date: string }
+    >({
+      query: ({ id, ...body }) => ({
+        url: `shared-contributions/${id}`,
+        method: 'PUT',
+        body
+      }),
+      invalidatesTags: ['Expense'],
+    }),
   })
 });
 
@@ -79,5 +90,6 @@ export const {
   useGetCategoriesQuery,
   useAddCategoryMutation,
   useUpdateCategoryMutation,
-  useAddSharedContributionMutation
+  useAddSharedContributionMutation,
+  useUpdateSharedContributionMutation
 } = expensesApi;
