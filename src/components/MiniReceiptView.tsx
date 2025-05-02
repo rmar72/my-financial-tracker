@@ -149,25 +149,28 @@ const MiniReceiptView: React.FC<Props> = ({
         contributionsAmount={contributionsAmount}
       />
 
-      {editMode ? (
-        <MiniReceiptForm
-          form={form}
-          onChange={handleChange}
-          onDateChange={handleDateChange}
-          onSave={handleSave}
-          onCancel={handleCancel}
-        />
-      ) : (
-        <MiniReceiptList
-          contributions={contributions}
-          onEdit={(contrib) => setEditingContribution(contrib)}
-          onDelete={handleDelete}
-          onAddNew={() => {
-            setEditingContribution(null);
-            setEditMode(true);
-          }}
-        />
-      )}
+<>
+  {editMode && (
+    <MiniReceiptForm
+      form={form}
+      onChange={handleChange}
+      onDateChange={handleDateChange}
+      onSave={handleSave}
+      onCancel={handleCancel}
+    />
+  )}
+
+  <MiniReceiptList
+    contributions={contributions}
+    onEdit={(contrib) => setEditingContribution(contrib)}
+    onDelete={handleDelete}
+    onAddNew={() => {
+      setEditingContribution(null);
+      setEditMode(true);
+    }}
+  />
+</>
+
     </Box>
   );
 };

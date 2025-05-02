@@ -127,7 +127,7 @@ const CategoryExpenseTable: React.FC<Props> = ({ categoryId, expenses, categorie
               .slice()
               .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
               .map((expense) => {
-                const contributionsAmount = expense.sharedContributions.reduce((acc: number, contr: {amount: number }) => acc += contr.amount, 0)
+                const contributionsAmount = expense.sharedContributions.reduce((acc: number, contr: {amount: number }) => acc + Number(contr.amount), 0)
                 return (
                 <React.Fragment key={expense.id}>
                   <ExpenseRow
