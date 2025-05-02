@@ -13,9 +13,8 @@ const MiniReceiptList: React.FC<Props> = ({
   contributions,
   onEdit,
   onDelete,
-  onAddNew
 }) => (
-  <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+  <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mb: 3 }}>
     {contributions.map((contrib) => (
       <Box
         key={contrib.id}
@@ -29,7 +28,7 @@ const MiniReceiptList: React.FC<Props> = ({
           bgcolor: '#f7f7f7',
           p: 1,
           borderRadius: 1,
-          minWidth: 300
+          minWidth: 300,
         }}
       >
         <Box>
@@ -55,12 +54,6 @@ const MiniReceiptList: React.FC<Props> = ({
         </Stack>
       </Box>
     ))}
-
-    <Box mt={2}>
-      <Button size="small" variant="outlined" onClick={onAddNew}>
-        Add New
-      </Button>
-    </Box>
   </Stack>
 );
 

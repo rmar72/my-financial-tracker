@@ -36,21 +36,13 @@ const MiniReceiptView: React.FC<Props> = ({
   const [deleteSharedContribution] = useDeleteSharedContributionMutation();
   const { refetch } = useGetExpensesQuery();
 
-  const [editMode, setEditMode] = useState(false);
   const [editingContribution, setEditingContribution] = useState<SharedContribution | null>(null);
-
   const [form, setForm] = useState({
     contributor: '',
     amount: '',
     method: '',
     date: new Date()
   });
-
-  useEffect(() => {
-    if (contributions.length === 0) {
-      setEditMode(true);
-    }
-  }, [contributions]);
 
   useEffect(() => {
     if (editingContribution) {
@@ -60,7 +52,7 @@ const MiniReceiptView: React.FC<Props> = ({
         method: editingContribution.method,
         date: new Date(editingContribution.date)
       });
-      setEditMode(true);
+
     }
   }, [editingContribution]);
 
@@ -74,7 +66,7 @@ const MiniReceiptView: React.FC<Props> = ({
 
   const handleCancel = () => {
     onCollapse();
-    setEditMode(false);
+
     setEditingContribution(null);
     resetForm();
   };
@@ -113,7 +105,7 @@ const MiniReceiptView: React.FC<Props> = ({
         }).unwrap();
       }
 
-      setEditMode(false);
+
       setEditingContribution(null);
       resetForm();
       await refetch();
@@ -148,29 +140,21 @@ const MiniReceiptView: React.FC<Props> = ({
         netAmount={netAmount}
         contributionsAmount={contributionsAmount}
       />
-
-<>
-  {editMode && (
-    <MiniReceiptForm
-      form={form}
-      onChange={handleChange}
-      onDateChange={handleDateChange}
-      onSave={handleSave}
-      onCancel={handleCancel}
-    />
-  )}
-
-  <MiniReceiptList
-    contributions={contributions}
-    onEdit={(contrib) => setEditingContribution(contrib)}
-    onDelete={handleDelete}
-    onAddNew={() => {
-      setEditingContribution(null);
-      setEditMode(true);
-    }}
-  />
-</>
-
+      <MiniReceiptList
+        contributions={contributions}
+        onEdit={(contrib) => setEditingContribution(contrib)}
+        onDelete={handleDelete}
+        onAddNew={() => {
+          setEditingContribution(null);
+        }}
+      />
+      <MiniReceiptForm
+        form={form}
+        onChange={handleChange}
+        onDateChange={handleDateChange}
+        onSave={handleSave}
+        onCancel={handleCancel}
+      />
     </Box>
   );
 };
