@@ -9,6 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Expense } from '../types/Expense';
+import GroupsIcon from '@mui/icons-material/Groups';
 
 interface Props {
   expense: Expense;
@@ -41,8 +42,15 @@ const ExpenseRow: React.FC<Props> = ({ expense, onEdit, onDelete, onExpand, isEx
       <TableCell>
         {expense.description || '-'}
       </TableCell>
-      <TableCell>
-        ${Number(expense.isShared ? expense.netAmount : expense.amount).toFixed(2)}
+      <TableCell sx={{ fontSize: '0.80rem', minWidth: 150 }}>
+        {expense.isShared ? (
+          <>
+            ${Number(expense.netAmount).toFixed(2)} of ${Number(expense.amount).toFixed(2)}{' '}
+            <GroupsIcon sx={{ fontSize: 21, ml: 0.5, verticalAlign: 'middle', color: 'primary.main' }} />
+          </>
+        ) : (
+          <>${Number(expense.amount).toFixed(2)}</>
+        )}
       </TableCell>
       <TableCell>
         {expense.payment.type}
