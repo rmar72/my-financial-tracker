@@ -9,7 +9,13 @@ import CloseIcon from '@mui/icons-material/Close';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
-import { useGetExpensesQuery, useUpdateExpenseMutation, useAddSharedContributionMutation, useUpdateSharedContributionMutation } from '../features/api/expensesApi';
+import { 
+  useGetExpensesQuery,
+  useUpdateExpenseMutation,
+  useAddSharedContributionMutation,
+  useUpdateSharedContributionMutation,
+  useDeleteSharedContributionMutation,
+} from '../features/api/expensesApi';
 
 interface Props {
   contributions: SharedContribution[];
@@ -24,6 +30,7 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, netAmoun
   const [addSharedContribution] = useAddSharedContributionMutation();
   const [updateExpense] = useUpdateExpenseMutation();
   const [updateSharedContribution] = useUpdateSharedContributionMutation();
+  const [deleteSharedContribution] = useDeleteSharedContributionMutation();
   const { refetch } = useGetExpensesQuery();
   const [editMode, setEditMode] = useState(false);
   const [editingContribution, setEditingContribution] = useState<SharedContribution | null>(null);
@@ -311,19 +318,36 @@ const MiniReceiptView: React.FC<Props> = ({ contributions, grossAmount, netAmoun
           </Grid>
         </Grid>
       ) : (
-        <Stack spacing={1}>
+        <Stack direction="row" spacing={1}>
           {contributions.map((contrib) => (
             <Box key={contrib.id} sx={{ fontSize: 14, color: 'grey.800', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <Box>
                 {contrib.contributor} paid ${Number(contrib.amount).toFixed(2)} via {contrib.method} on {new Date(contrib.date).toLocaleDateString('en-US')}
               </Box>
-              <Button
-                size="small"
-                variant="outlined"
-                onClick={() => setEditingContribution(contrib)}
-              >
-                Edit
-              </Button>
+              <Stack direction="row" spacing={1}>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  onClick={() => setEditingContribution(contrib)}
+                >
+                  Edit
+                </Button>
+                <Button
+                  size="small"
+                  color="error"
+                  variant="outlined"
+                  onClick={async () => {
+                    try {
+                      await deleteSharedContribution(contrib.id).unwrap();
+                      await refetch();
+                    } catch (err) {
+                      console.error('Failed to delete contribution', err);
+                    }
+                  }}
+                >
+                  Delete
+                </Button>
+              </Stack>
             </Box>
           ))}
 
