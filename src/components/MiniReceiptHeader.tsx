@@ -58,7 +58,7 @@ const MiniReceiptHeader: React.FC<Props> = ({ grossAmount, netAmount, contributi
       Contributions Amount: {contributionsAmount != null ? `$ ${Number(contributionsAmount).toFixed(2)}` : 'N/A'}
     </Box>
 
-    <Divider sx={{ mt: '-5px', mb: 2.5 }} />
+    <Divider sx={{ mt: '-5px', mb: 0.5 }} />
   </Box>
 );
 

@@ -46,7 +46,7 @@ const ExpenseRow: React.FC<Props> = ({ expense, onEdit, onDelete, onExpand, isEx
         {expense.isShared ? (
           <>
             ${Number(expense.netAmount).toFixed(2)} of ${Number(expense.amount).toFixed(2)}{' '}
-            <GroupsIcon sx={{ fontSize: 21, ml: 0.5, verticalAlign: 'middle', color: 'primary.main' }} />
+            <GroupsIcon sx={{ fontSize: 25, ml: 1.5, mb: 0, pb: 0.4, verticalAlign: 'middle', color: 'primary.main' }} />
           </>
         ) : (
           <>${Number(expense.amount).toFixed(2)}</>

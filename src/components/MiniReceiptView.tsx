@@ -144,9 +144,6 @@ const MiniReceiptView: React.FC<Props> = ({
         contributions={contributions}
         onEdit={(contrib) => setEditingContribution(contrib)}
         onDelete={handleDelete}
-        onAddNew={() => {
-          setEditingContribution(null);
-        }}
       />
       <MiniReceiptForm
         form={form}
