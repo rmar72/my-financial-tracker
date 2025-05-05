@@ -1,10 +1,12 @@
 import React from 'react';
 import {
+  Box,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   Button,
+  Stack,
 } from '@mui/material';
 import { Expense } from '../types/Expense';
 import CategoryExpenseTable from './CategoryExpenseTable';
@@ -15,7 +17,7 @@ interface Props {
   categoryId: number;
   expenses: Expense[];
   categoryName?: string;
-  categories: { id: number; name: string }[];
+  categories: { id: number; name: string; budgetAmount: string; }[];
   selectedMonth: string;
   selectedYear: string;
 }
@@ -36,6 +38,15 @@ const CategoryExpensesModal: React.FC<Props> = ({
     categories.find((c) => c.id === categoryId)?.name ||
     fallbackName;
 
+  const categoryBudget = categories.find((c) => c.id === categoryId)?.budgetAmount || 0;
+  const categoryTotal = expenses
+    .filter(e => e.categoryId === categoryId)
+    .reduce((sum, e) => {
+      const isShared = e.isShared && typeof e.netAmount === 'number';
+      return sum + Number(isShared ? e.netAmount : e.amount);
+    }, 0);
+
+
   return (
     <Dialog
       open={open}
@@ -53,7 +64,36 @@ const CategoryExpensesModal: React.FC<Props> = ({
       <DialogTitle variant="h6" fontWeight="bold" fontSize={18}>
         {displayName} {} – Expenses
       </DialogTitle>
+      
       <DialogContent dividers>
+        <Stack direction="row" spacing={2}>
+          <Box
+            sx={{
+              backgroundColor: '#FFF3E0',
+              color: '#E65100',
+              px: 2,
+              py: 1,
+              borderRadius: 2,
+              fontWeight: 600,
+              fontSize: 14,
+            }}
+          >
+            Total: ${categoryTotal.toFixed(2)}
+          </Box>
+          <Box
+            sx={{
+              backgroundColor: '#E0F7FA',
+              color: '#006064',
+              px: 2,
+              py: 1,
+              borderRadius: 2,
+              fontWeight: 600,
+              fontSize: 14,
+            }}
+          >
+            Budget: ${Number(categoryBudget).toFixed(2)}
+          </Box>
+        </Stack>
         <CategoryExpenseTable
           categoryId={categoryId}
           expenses={expenses}
