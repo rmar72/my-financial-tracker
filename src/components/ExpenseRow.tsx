@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import { Expense } from '../types/Expense';
 import GroupsIcon from '@mui/icons-material/Groups';
 
@@ -60,8 +60,8 @@ const ExpenseRow: React.FC<Props> = ({ expense, onEdit, onDelete, onExpand, isEx
           <IconButton size="small" onClick={() => onEdit(expense)}>
             <EditIcon fontSize="small" />
           </IconButton>
-          <IconButton color="error" size="small" onClick={() => onDelete(expense.id)}>
-            <DeleteIcon fontSize="small" />
+          <IconButton size="small" onClick={() => onDelete(expense.id)}>
+            <DeleteOutlineRoundedIcon color="error" fontSize="small" />
           </IconButton>
           <IconButton size="small" onClick={() => onExpand(expense.id)}>
             {!expense.isShared ? <AddIcon fontSize="small" /> : isExpanded ? '▲' : '▼'}

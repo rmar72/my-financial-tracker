@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { SharedContribution } from '../types/SharedContribution';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 
 interface Props {
   contributions: SharedContribution[];
@@ -40,7 +40,7 @@ const MiniReceiptList: React.FC<Props> = ({
                     <EditIcon fontSize="small" />
                   </IconButton>
                   <IconButton color="error" size="small" onClick={() => onDelete(contrib.id)}>
-                    <DeleteIcon fontSize="small" />
+                    <DeleteOutlineRoundedIcon color="error" fontSize="small" />
                   </IconButton>
                 </Stack>
               </TableCell>
