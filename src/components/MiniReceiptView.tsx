@@ -117,11 +117,27 @@ const MiniReceiptView: React.FC<Props> = ({
   const handleDelete = async (id: number) => {
     try {
       await deleteSharedContribution(id).unwrap();
-      await refetch();
+      const updated = await refetch();
+  
+      const expenseList = updated?.data;
+      if (!expenseList) return;
+  
+      const expense = expenseList.find(e => e.id === expenseId);
+      const isLast = expense?.sharedContributions.length === 0;
+  
+      if (expense?.isShared && isLast) {
+        await updateExpense({
+          id: expenseId,
+          data: { isShared: false }
+        }).unwrap();
+  
+        await refetch();
+      }
+  
     } catch (err) {
       console.error('Failed to delete contribution', err);
     }
-  };
+  };  
 
   return (
     <Box
